@@ -43,6 +43,11 @@ final class WorkerDebugModuleTest extends TestCase
 
         $response->expects(self::never())->method('getHeaders');
 
+        $logTarget = $this->createMock(LogTarget::class);
+
+        $logTarget->tag = 'test-debug-tag';
+        $module->logTarget = $logTarget;
+
         $event = new Event();
 
         $event->sender = $response;
