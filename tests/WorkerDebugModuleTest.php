@@ -31,6 +31,78 @@ final class WorkerDebugModuleTest extends TestCase
         );
     }
 
+    public function testSetDebugHeadersCalculatesCorrectDurationInMilliseconds(): void
+    {
+        $this->webApplication();
+
+        $module = $this->createPartialMock(
+            WorkerDebugModule::class,
+            [
+                'checkAccess',
+                'getUniqueId',
+            ],
+        );
+
+        $module->method('checkAccess')->willReturn(true);
+        $module->method('getUniqueId')->willReturn('test-module');
+
+        $logTarget = $this->createMock(LogTarget::class);
+
+        $logTarget->tag = 'test-debug-tag';
+        $module->logTarget = $logTarget;
+
+        // time specific: exactly 2.5 seconds ago
+        $customStartTime = (string) (microtime(true) - 2.5);
+
+        $headers = $this->createMock(HeaderCollection::class);
+
+        $headers->method('get')->with('statelessAppStartTime')->willReturn($customStartTime);
+
+        $durationCaptured = false;
+
+        $headers
+            ->expects(self::exactly(3))
+            ->method('set')
+            ->willReturnCallback(
+                static function (string $name, string $value) use ($headers, &$durationCaptured): HeaderCollection {
+                    if ($name === 'X-Debug-Duration') {
+                        self::assertGreaterThanOrEqual(
+                            2499,
+                            (float) $value,
+                            "'X-Debug-Duration' should be at least '2499ms' for a '2.5' second duration, " .
+                            "got: {$value}. This suggests incorrect millisecond conversion (possibly * '999' instead " .
+                            "of * '1000').",
+                        );
+                        self::assertLessThan(
+                            2510,
+                            (float) $value,
+                            "'X-Debug-Duration' should be less than '2510ms' for a '2.5' second duration, " .
+                            "got: {$value}.",
+                        );
+
+                        $durationCaptured = true;
+                    }
+
+                    return $headers;
+                },
+            );
+
+        $response = $this->createMock(Response::class);
+
+        $response->method('getHeaders')->willReturn($headers);
+
+        $event = new Event();
+
+        $event->sender = $response;
+
+        $module->setDebugHeaders($event);
+
+        self::assertTrue(
+            $durationCaptured,
+            "'X-Debug-Duration' header should be set and calculated correctly.",
+        );
+    }
+
     public function testSetDebugHeadersDoesNothingWhenAccessIsNotAllowed(): void
     {
         $this->webApplication();
@@ -248,7 +320,7 @@ final class WorkerDebugModuleTest extends TestCase
                             10000,
                             (float) $value,
                             "'X-Debug-Duration' should be a reasonable duration in milliseconds, got: {$value}. " .
-                            "This suggests incorrect calculation (possibly addition instead of subtraction).",
+                            'This suggests incorrect calculation (possibly addition instead of subtraction).',
                         );
 
                         $durationCaptured = true;
