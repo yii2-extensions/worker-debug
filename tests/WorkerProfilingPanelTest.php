@@ -50,6 +50,11 @@ final class WorkerProfilingPanelTest extends TestCase
             $result['time'] ?? null,
             "'time' value should be greater than '1.5' seconds when using custom start time from '2' seconds ago.",
         );
+        self::assertLessThan(
+            10.0,
+            $result['time'] ?? null,
+            "'time' value should be a reasonable duration in seconds.",
+        );
         self::assertSame(
             $expectedMessages,
             $result['messages'] ?? null,
