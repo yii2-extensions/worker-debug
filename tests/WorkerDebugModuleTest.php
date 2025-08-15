@@ -73,11 +73,12 @@ final class WorkerDebugModuleTest extends TestCase
                             "got: {$value}. This suggests incorrect millisecond conversion (possibly * '999' instead " .
                             "of * '1000').",
                         );
-                        self::assertLessThan(
-                            2510,
+                        self::assertLessThanOrEqual(
+                            2501,
                             (float) $value,
-                            "'X-Debug-Duration' should be less than '2510ms' for a '2.5' second duration, " .
-                            "got: {$value}.",
+                            "'X-Debug-Duration' should be less than '2501ms' for a '2.5' second duration, " .
+                            "got: {$value}. This suggests incorrect millisecond conversion (possibly * '999' instead " .
+                            "of * '1000').",
                         );
 
                         $durationCaptured = true;
