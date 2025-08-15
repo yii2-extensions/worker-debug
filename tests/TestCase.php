@@ -59,7 +59,6 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
                     'components' => [
                         'request' => [
                             'cookieValidationKey' => self::COOKIE_VALIDATION_KEY,
-                            'isConsoleRequest' => false,
                             'scriptFile' => __DIR__ . '/index.php',
                             'scriptUrl' => '/index.php',
                         ],
