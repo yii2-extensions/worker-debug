@@ -54,8 +54,10 @@ class WorkerDebugModule extends Module
     {
         $corePanels = parent::corePanels();
 
-        $corePanels['profiling'] = ['class' => WorkerProfilingPanel::class];
-        $corePanels['timeline'] = ['class' => WorkerTimelinePanel::class];
+        $corePanels = [
+            'profiling' => ['class' => WorkerProfilingPanel::class],
+            'timeline' => ['class' => WorkerTimelinePanel::class],
+        ];
 
         return $corePanels;
     }
