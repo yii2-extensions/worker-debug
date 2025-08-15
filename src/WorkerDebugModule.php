@@ -8,6 +8,7 @@ use yii\debug\Module;
 use yii\helpers\Url;
 use yii\web\Response;
 
+use function array_merge;
 use function ceil;
 use function microtime;
 
@@ -53,13 +54,12 @@ class WorkerDebugModule extends Module
      */
     protected function corePanels(): array
     {
-        $corePanels = parent::corePanels();
-
-        $corePanels = [
-            'profiling' => ['class' => WorkerProfilingPanel::class],
-            'timeline' => ['class' => WorkerTimelinePanel::class],
-        ];
-
-        return $corePanels;
+        return array_merge(
+            parent::corePanels(),
+            [
+                'profiling' => ['class' => WorkerProfilingPanel::class],
+                'timeline' => ['class' => WorkerTimelinePanel::class],
+            ],
+        );
     }
 }
