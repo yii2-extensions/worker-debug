@@ -39,7 +39,7 @@ class WorkerDebugModule extends Module
 
         if ($event->sender instanceof Response) {
             $statelessAppStartTime = $event->sender->getHeaders()->get('statelessAppStartTime') ?? YII_BEGIN_TIME;
-            $durationMs = (int) ceil((microtime(true) - (float) $statelessAppStartTime) * 1000);
+            $durationMs = ceil((microtime(true) - (float) $statelessAppStartTime) * 1000);
 
             $event->sender->getHeaders()
                 ->set('X-Debug-Tag', $this->logTarget->tag)
