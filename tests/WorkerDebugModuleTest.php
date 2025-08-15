@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace yii2\extensions\debug\tests;
 
+use PHPForge\Support\Assert;
 use PHPUnit\Framework\Attributes\Group;
 use stdClass;
 use yii\base\Event;
@@ -15,7 +16,7 @@ use yii2\extensions\debug\WorkerDebugModule;
 #[Group('worker-debug')]
 final class WorkerDebugModuleTest extends TestCase
 {
-    public function testReturnModuleVersionAndDataPathWhenInstantiated(): void
+    public function testReturnCorePanelsAndModuleDefaults(): void
     {
         $this->webApplication();
 
@@ -24,11 +25,59 @@ final class WorkerDebugModuleTest extends TestCase
         self::assertSame(
             '2.1.27.0',
             $module->getVersion(),
-            "'getVersion()' should return '2.1.27.0' for the default module version.",
+            "'getVersion()' should return '2.1.27.0' as the default module version.",
         );
+
         self::assertSame(
             dirname(__DIR__) . '/runtime/debug',
             $module->dataPath,
+            "'dataPath' should be equal to 'tests/runtime/debug' to ensure debug data is stored in the expected path.",
+        );
+
+        $panels = Assert::invokeMethod($module, 'corePanels');
+
+        self::assertSame(
+            [
+                'config' => [
+                    'class' => 'yii\debug\panels\ConfigPanel',
+                ],
+                'log' => [
+                    'class' => 'yii\debug\panels\LogPanel',
+                ],
+                'profiling' => [
+                    'class' => 'yii2\extensions\debug\WorkerProfilingPanel',
+                ],
+                'db' => [
+                    'class' => 'yii\debug\panels\DbPanel',
+                ],
+                'event' => [
+                    'class' => 'yii\debug\panels\EventPanel',
+                ],
+                'mail' => [
+                    'class' => 'yii\debug\panels\MailPanel',
+                ],
+                'timeline' => [
+                    'class' => 'yii2\extensions\debug\WorkerTimelinePanel',
+                ],
+                'dump' => [
+                    'class' => 'yii\debug\panels\DumpPanel',
+                ],
+                'router' => [
+                    'class' => 'yii\debug\panels\RouterPanel',
+                ],
+                'request' => [
+                    'class' => 'yii\debug\panels\RequestPanel',
+                ],
+                'user' => [
+                    'class' => 'yii\debug\panels\UserPanel',
+                ],
+                'asset' => [
+                    'class' => 'yii\debug\panels\AssetPanel',
+                ],
+            ],
+            $panels,
+            "'corePanels' should include the 'profiling' and 'timeline' panels with the correct classes, ensuring " .
+            'integration of custom and standard panels in the debug module.',
         );
     }
 
