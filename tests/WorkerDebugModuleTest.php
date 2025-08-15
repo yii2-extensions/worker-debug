@@ -53,7 +53,7 @@ final class WorkerDebugModuleTest extends TestCase
         $module->logTarget = $logTarget;
 
         $startTime = '1234567890.500';
-        $currentTime = 1234567893.000;
+        $currentTime = 1234567893.1234;
 
         TimeFunctions::setMockedMicrotime($currentTime);
 
@@ -70,10 +70,9 @@ final class WorkerDebugModuleTest extends TestCase
                 static function (string $name, string $value) use ($headers, &$durationCaptured): HeaderCollection {
                     if ($name === 'X-Debug-Duration') {
                         self::assertSame(
-                            2500.0,
-                            (float) $value,
-                            "'X-Debug-Duration' should be exactly '2500ms' for '2.5' seconds with correct * '1000' " .
-                            "conversion, got: {$value}.",
+                            2624,
+                            (int) $value,
+                            "'X-Debug-Duration' should be '2624ms' using 'ceil()' for proper rounding up, got: {$value}. ",
                         );
 
                         $durationCaptured = true;
