@@ -244,6 +244,12 @@ final class WorkerDebugModuleTest extends TestCase
                             "'X-Debug-Duration' header should be greater than '0' when 'statelessAppStartTime' is " .
                             "available, got: {$value}.",
                         );
+                        self::assertLessThan(
+                            10000,
+                            (float) $value,
+                            "'X-Debug-Duration' should be a reasonable duration in milliseconds, got: {$value}. " .
+                            "This suggests incorrect calculation (possibly addition instead of subtraction).",
+                        );
 
                         $durationCaptured = true;
                     }
