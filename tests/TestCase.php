@@ -50,6 +50,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
                 [
                     'id' => 'web-app',
                     'basePath' => __DIR__,
+                    'runtimePath' => dirname(__DIR__) . '/runtime',
                     'vendorPath' => dirname(__DIR__) . '/vendor',
                     'aliases' => [
                         '@bower' => '@vendor/bower-asset',

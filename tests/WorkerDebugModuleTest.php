@@ -14,7 +14,7 @@ use yii2\extensions\debug\WorkerDebugModule;
 #[Group('worker-debug')]
 final class WorkerDebugModuleTest extends TestCase
 {
-    public function testReturnModuleVersionWhenInstantiated(): void
+    public function testReturnModuleVersionAndDataPathWhenInstantiated(): void
     {
         $this->webApplication();
 
@@ -24,6 +24,10 @@ final class WorkerDebugModuleTest extends TestCase
             '2.1.27.0',
             $module->getVersion(),
             "'getVersion()' should return '2.1.27.0' for the default module version.",
+        );
+        self::assertSame(
+            dirname(__DIR__) . '/runtime/debug',
+            $module->dataPath,
         );
     }
 
