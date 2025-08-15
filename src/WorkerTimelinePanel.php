@@ -20,7 +20,7 @@ class WorkerTimelinePanel extends TimelinePanel
         $statelessAppStartTime = Yii::$app->response->getHeaders()->get('statelessAppStartTime') ?? YII_BEGIN_TIME;
 
         return [
-            'start' => (float) $statelessAppStartTime,
+            'start' => $statelessAppStartTime,
             'end' => microtime(true),
             'memory' => memory_get_peak_usage(),
         ];

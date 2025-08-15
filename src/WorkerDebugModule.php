@@ -15,9 +15,9 @@ class WorkerDebugModule extends Module
 {
     public function init(): void
     {
-        parent::init();
-
         $this->viewPath = '@yii/debug/views';
+
+        parent::init();
     }
 
     public function setDebugHeaders($event): void
