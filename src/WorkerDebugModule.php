@@ -10,7 +10,6 @@ use yii\web\Response;
 
 use function array_merge;
 use function ceil;
-use function microtime;
 
 class WorkerDebugModule extends Module
 {

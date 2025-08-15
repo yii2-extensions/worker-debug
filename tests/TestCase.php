@@ -7,19 +7,20 @@ namespace yii2\extensions\debug\tests;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\Application;
+use yii2\extensions\debug\tests\support\stub\TimeFunctions;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
     /**
      * A secret key used for cookie validation in tests.
-     *
-     * gitleaks:allow
      */
-    protected const COOKIE_VALIDATION_KEY = 'wefJDF8sfdsfSDefwqdxj9oq';
+    protected const COOKIE_VALIDATION_KEY = 'wefJDF8sfdsfSDefwqdxj9oq'; // gitleaks:allow (test-only, not a real secret)
 
     public function tearDown(): void
     {
         $this->closeApplication();
+
+        TimeFunctions::clearMockedMicrotime();
 
         parent::tearDown();
     }

@@ -9,6 +9,7 @@ use stdClass;
 use yii\base\Event;
 use yii\debug\LogTarget;
 use yii\web\{HeaderCollection, Response};
+use yii2\extensions\debug\tests\support\stub\TimeFunctions;
 use yii2\extensions\debug\WorkerDebugModule;
 
 #[Group('worker-debug')]
@@ -51,12 +52,14 @@ final class WorkerDebugModuleTest extends TestCase
         $logTarget->tag = 'test-debug-tag';
         $module->logTarget = $logTarget;
 
-        // time specific: exactly 2.5 seconds ago
-        $customStartTime = (string) (microtime(true) - 2.5);
+        $startTime = '1234567890.500';
+        $currentTime = 1234567893.000;
+
+        TimeFunctions::setMockedMicrotime($currentTime);
 
         $headers = $this->createMock(HeaderCollection::class);
 
-        $headers->method('get')->with('statelessAppStartTime')->willReturn($customStartTime);
+        $headers->method('get')->with('statelessAppStartTime')->willReturn($startTime);
 
         $durationCaptured = false;
 
@@ -66,19 +69,11 @@ final class WorkerDebugModuleTest extends TestCase
             ->willReturnCallback(
                 static function (string $name, string $value) use ($headers, &$durationCaptured): HeaderCollection {
                     if ($name === 'X-Debug-Duration') {
-                        self::assertGreaterThanOrEqual(
-                            2499,
+                        self::assertSame(
+                            2500.0,
                             (float) $value,
-                            "'X-Debug-Duration' should be at least '2499ms' for a '2.5' second duration, " .
-                            "got: {$value}. This suggests incorrect millisecond conversion (possibly * '999' instead " .
-                            "of * '1000').",
-                        );
-                        self::assertLessThanOrEqual(
-                            2503,
-                            (float) $value,
-                            "'X-Debug-Duration' should be less than '2503ms' for a '2.5' second duration, " .
-                            "got: {$value}. This suggests incorrect millisecond conversion (possibly * '999' instead " .
-                            "of * '1000').",
+                            "'X-Debug-Duration' should be exactly '2500ms' for '2.5' seconds with correct * '1000' " .
+                            "conversion, got: {$value}.",
                         );
 
                         $durationCaptured = true;
