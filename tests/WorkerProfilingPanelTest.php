@@ -56,6 +56,7 @@ final class WorkerProfilingPanelTest extends TestCase
             "'messages' value should match the result from 'getLogMessages()' with custom start time.",
         );
     }
+
     public function testSaveReturnsCorrectDataStructureWithDefaultStartTime(): void
     {
         $headers = $this->createMock(HeaderCollection::class);

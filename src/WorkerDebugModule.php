@@ -8,8 +8,8 @@ use yii\debug\Module;
 use yii\helpers\Url;
 use yii\web\Response;
 
+use function ceil;
 use function microtime;
-use function number_format;
 
 class WorkerDebugModule extends Module
 {
@@ -39,10 +39,11 @@ class WorkerDebugModule extends Module
 
         if ($event->sender instanceof Response) {
             $statelessAppStartTime = $event->sender->getHeaders()->get('statelessAppStartTime') ?? YII_BEGIN_TIME;
+            $durationMs = (int) ceil((microtime(true) - (float) $statelessAppStartTime) * 1000);
 
             $event->sender->getHeaders()
                 ->set('X-Debug-Tag', $this->logTarget->tag)
-                ->set('X-Debug-Duration', number_format((microtime(true) - (float) $statelessAppStartTime) * 1000 + 1))
+                ->set('X-Debug-Duration', (string) $durationMs)
                 ->set('X-Debug-Link', $url);
         }
     }
