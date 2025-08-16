@@ -1,8 +1,8 @@
 <p align="center">
-    <a href="https://github.com/yii2-extensions/template" target="_blank">
+    <a href="https://github.com/yii2-extensions/worker-debug" target="_blank">
         <img src="https://www.yiiframework.com/image/yii_logo_light.svg" alt="Yii Framework">
     </a>
-    <h1 align="center">Extension template</h1>
+    <h1 align="center">Debug toolbar for the Yii2 PSR Bridge extension.</h1>
     <br>
 </p>
 
@@ -16,48 +16,96 @@
     <a href="https://github.com/yiisoft/yii2/tree/22.0" target="_blank">
         <img src="https://img.shields.io/badge/Yii2%20-22-blue" alt="Yii2 22.0">
     </a>
-    <a href="https://github.com/yii2-extensions/template/actions/workflows/build.yml" target="_blank">
-        <img src="https://github.com/yii2-extensions/template/actions/workflows/build.yml/badge.svg" alt="PHPUnit">
+    <a href="https://github.com/yii2-extensions/worker-debug/actions/workflows/build.yml" target="_blank">
+        <img src="https://github.com/yii2-extensions/worker-debug/actions/workflows/build.yml/badge.svg" alt="PHPUnit">
     </a> 
-    <a href="https://github.com/yii2-extensions/template/actions/workflows/static.yml" target="_blank">        
-        <img src="https://github.com/yii2-extensions/template/actions/workflows/static.yml/badge.svg" alt="Static Analysis">
+    <a href="https://dashboard.stryker-mutator.io/reports/github.com/yii2-extensions/worker-debug/main" target="_blank">
+        <img src="https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fyii2-extensions%2Fworker-debug%2Fmain" alt="Mutation Testing">
+    </a>    
+    <a href="https://github.com/yii2-extensions/worker-debug/actions/workflows/static.yml" target="_blank">        
+        <img src="https://github.com/yii2-extensions/worker-debug/actions/workflows/static.yml/badge.svg" alt="Static Analysis">
     </a>  
 </p>
 
-A Yii2 extension template to create your own Yii2 extensions.
+A specialized debug toolbar extension that provides enhanced debugging capabilities for Yii2 applications using the PSR 
+Bridge, offering comprehensive insights into application execution, performance metrics, and component interactions.
 
 ## Features
 
-- ✅ **PHP 8.1+**: This package requires PHP 8.1 or higher.
+✅ **Enhanced Debug Toolbar**
+- Real-time performance monitoring and metrics collection.
 
 ## Quick start
 
+### System requirements
+
+- [`PHP`](https://www.php.net/downloads) 8.1 or higher.
+- [`Composer`](https://getcomposer.org/download/) for dependency management.
+- [`Yii2`](https://github.com/yiisoft/yii2) 2.0.53+ or 22.x.
+
 ### Installation
 
+#### Method 1: Using [Composer](https://getcomposer.org/download/) (recommended)
+
+Install the extension.
+
 ```bash
-composer require github_username/github_repository-name
+composer require yii2-extensions/worker-debug:^0.1
+```
+
+#### Method 2: Manual installation
+
+Add to your `composer.json`.
+
+```json
+{
+    "require": {
+        "yii2-extensions/worker-debug": "^0.1"
+    }
+}
+```
+
+Then run.
+
+```bash
+composer update
 ```
 
 ### Basic Usage
 
-Describe how to use your extension in a basic way.
+Add the following code to your configuration file (`web.php`).
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use yii2\extensions\debug\WorkerDebugModule;
+
+if (YII_ENV_DEV) {
+    // configuration adjustments for 'dev' environment
+    $config['bootstrap'][] = 'debug';
+    $config['modules']['debug'] = [
+        'class' => WorkerDebugModule::class,
+        // uncomment the following to add your IP if you are not connecting from localhost.
+        //'allowedIPs' => ['127.0.0.1', '::1'],
+    ];
+}
+```
 
 ## Documentation
 
-For detailed configuration options and advanced usage.
+For testing guidance, see.
 
-- 📚 [Installation Guide](docs/installation.md)
-- ⚙️ [Configuration Reference](docs/configuration.md) 
-- 💡 [Usage Examples](docs/examples.md)
 - 🧪 [Testing Guide](docs/testing.md)
 
 ## Quality code
 
-[![Latest Stable Version](https://poser.pugx.org/yii2-extensions/template/v)](https://github.com/yii2-extensions/template/releases)
-[![Total Downloads](https://poser.pugx.org/yii2-extensions/template/downloads)](https://packagist.org/packages/yii2-extensions/template)
-[![codecov](https://codecov.io/gh/yii2-extensions/template/graph/badge.svg?token=Upc4yA23YN)](https://codecov.io/gh/yii2-extensions/template)
-[![phpstan-level](https://img.shields.io/badge/PHPStan%20level-max-blue)](https://github.com/yii2-extensions/localeurls/actions/workflows/static.yml)
-[![StyleCI](https://github.styleci.io/repos/698621511/shield?branch=main)](https://github.styleci.io/repos/698621511?branch=main)
+[![Latest Stable Version](https://poser.pugx.org/yii2-extensions/worker-debug/v)](https://github.com/yii2-extensions/worker-debug/releases)
+[![Total Downloads](https://poser.pugx.org/yii2-extensions/worker-debug/downloads)](https://packagist.org/packages/yii2-extensions/worker-debug)
+[![codecov](https://codecov.io/gh/yii2-extensions/worker-debug/graph/badge.svg?token=Upc4yA23YN)](https://codecov.io/gh/yii2-extensions/worker-debug)
+[![phpstan-level](https://img.shields.io/badge/PHPStan%20level-max-blue)](https://github.com/yii2-extensions/worker-debug/actions/workflows/static.yml)
+[![StyleCI](https://github.styleci.io/repos/1038618413/shield?branch=main)](https://github.styleci.io/repos/1038618413?branch=main)
 
 ## Our social networks
 
@@ -65,4 +113,4 @@ For detailed configuration options and advanced usage.
 
 ## License
 
-[![License](https://img.shields.io/github/license/yii2-extensions/template?cacheSeconds=0)](LICENSE.md)
+[![License](https://img.shields.io/github/license/yii2-extensions/worker-debug?cacheSeconds=0)](LICENSE.md)
