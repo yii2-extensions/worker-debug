@@ -16,11 +16,16 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      */
     protected const COOKIE_VALIDATION_KEY = 'wefJDF8sfdsfSDefwqdxj9oq'; // gitleaks:allow (test-only, not a real secret)
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        MockerFunctions::clearMockedMicrotime();
+    }
+
     public function tearDown(): void
     {
         $this->closeApplication();
-
-        MockerFunctions::clearMockedMicrotime();
 
         parent::tearDown();
     }
