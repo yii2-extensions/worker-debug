@@ -9,7 +9,7 @@ use PHPUnit\Framework\Attributes\Group;
 use stdClass;
 use yii\base\Event;
 use yii\debug\LogTarget;
-use yii\web\{HeaderCollection, Request, Response};
+use yii\web\{HeaderCollection, Response};
 use yii2\extensions\debug\tests\support\stub\TimeFunctions;
 use yii2\extensions\debug\WorkerDebugModule;
 
@@ -92,10 +92,6 @@ final class WorkerDebugModuleTest extends TestCase
 
         $headers->method('get')->with('statelessAppStartTime')->willReturn($startTime);
 
-        $request = $this->createPartialMock(Request::class, ['getHeaders']);
-
-        $request->method('getHeaders')->willReturn($headers);
-
         $response = $this->createPartialMock(Response::class, ['getHeaders']);
 
         $response->method('getHeaders')->willReturn($headers);
@@ -103,7 +99,7 @@ final class WorkerDebugModuleTest extends TestCase
         $this->webApplication(
             [
                 'components' => [
-                    'request' => $request,
+                    'request' => $this->buildRequestWithStatelessStart($startTime),
                     'response' => $response,
                 ],
             ],
@@ -272,10 +268,6 @@ final class WorkerDebugModuleTest extends TestCase
 
         $headers->method('get')->with('statelessAppStartTime')->willReturn($customStartTime);
 
-        $request = $this->createPartialMock(Request::class, ['getHeaders']);
-
-        $request->method('getHeaders')->willReturn($headers);
-
         $response = $this->createPartialMock(Response::class, ['getHeaders']);
 
         $response->method('getHeaders')->willReturn($headers);
@@ -283,7 +275,7 @@ final class WorkerDebugModuleTest extends TestCase
         $this->webApplication(
             [
                 'components' => [
-                    'request' => $request,
+                    'request' => $this->buildRequestWithStatelessStart($customStartTime),
                     'response' => $response,
                 ],
             ],

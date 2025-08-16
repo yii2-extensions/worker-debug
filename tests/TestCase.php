@@ -6,7 +6,7 @@ namespace yii2\extensions\debug\tests;
 
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\web\Application;
+use yii\web\{Application, HeaderCollection, Request};
 use yii2\extensions\debug\tests\support\stub\TimeFunctions;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
@@ -23,6 +23,19 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         TimeFunctions::clearMockedMicrotime();
 
         parent::tearDown();
+    }
+
+    protected function buildRequestWithStatelessStart(string|null $value): Request
+    {
+        $headers = $this->createPartialMock(HeaderCollection::class, ['get']);
+
+        $headers->method('get')->with('statelessAppStartTime')->willReturn($value);
+
+        $request = $this->createPartialMock(Request::class, ['getHeaders']);
+
+        $request->method('getHeaders')->willReturn($headers);
+
+        return $request;
     }
 
     protected function closeApplication(): void

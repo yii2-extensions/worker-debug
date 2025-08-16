@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace yii2\extensions\debug\tests;
 
 use PHPUnit\Framework\Attributes\Group;
-use yii\web\{HeaderCollection, Request};
 use yii2\extensions\debug\WorkerTimelinePanel;
 
 #[Group('worker-debug')]
@@ -15,18 +14,10 @@ final class WorkerTimelinePanelTest extends TestCase
     {
         $customStartTime = (string) (microtime(true) - 2);
 
-        $headers = $this->createPartialMock(HeaderCollection::class, ['get']);
-
-        $headers->method('get')->with('statelessAppStartTime')->willReturn($customStartTime);
-
-        $request = $this->createPartialMock(Request::class, ['getHeaders']);
-
-        $request->method('getHeaders')->willReturn($headers);
-
         $this->webApplication(
             [
                 'components' => [
-                    'request' => $request,
+                    'request' => $this->buildRequestWithStatelessStart($customStartTime),
                 ],
             ],
         );
@@ -63,18 +54,10 @@ final class WorkerTimelinePanelTest extends TestCase
 
     public function testSaveReturnsCorrectDataStructureWithDefaultStartTime(): void
     {
-        $headers = $this->createPartialMock(HeaderCollection::class, ['get']);
-
-        $headers->method('get')->with('statelessAppStartTime')->willReturn(null);
-
-        $request = $this->createPartialMock(Request::class, ['getHeaders']);
-
-        $request->method('getHeaders')->willReturn($headers);
-
         $this->webApplication(
             [
                 'components' => [
-                    'request' => $request,
+                    'request' => $this->buildRequestWithStatelessStart(null),
                 ],
             ],
         );
@@ -113,7 +96,7 @@ final class WorkerTimelinePanelTest extends TestCase
         self::assertGreaterThanOrEqual(
             $result['start'],
             $result['end'],
-            "'start' value should be greater than or equal to 'end' value, indicating correct timeline order.",
+            "'end' value should be greater than or equal to 'start' value, indicating correct timeline order.",
         );
     }
 }
