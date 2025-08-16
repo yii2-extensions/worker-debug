@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace yii2\extensions\debug\tests\support\stub;
 
 /**
- * Mocks system for system microtime function with controlled state and inspection.
+ * Mocks the PHP function with controlled state and inspection.
  *
  * Provides a mock implementation of the core PHP {@see \microtime()} function to enable deterministic and isolated
  * testing of time-dependent logic without side effects or reliance on the system clock.
@@ -14,8 +14,7 @@ namespace yii2\extensions\debug\tests\support\stub;
  * state and exposing static methods for fine-grained control.
  *
  * Key features.
- * - Complete simulation of PHP functions.
- *   - {@see \microtime()} (mockable time for timing tests).
+ * - Mockable replacement of {@see \microtime()} for timing tests.
  * - State reset capability for test isolation and repeatability.
  *
  * @copyright Copyright (C) 2025 Terabytesoftw.
