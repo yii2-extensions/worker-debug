@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace yii2\extensions\debug\tests\support\stub;
 
-final class TimeFunctions
+final class MockerFunctions
 {
     private static float|null $mockedMicrotime = null;
 

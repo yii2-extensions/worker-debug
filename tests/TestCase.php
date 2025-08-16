@@ -7,7 +7,7 @@ namespace yii2\extensions\debug\tests;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\{Application, HeaderCollection, Request};
-use yii2\extensions\debug\tests\support\stub\TimeFunctions;
+use yii2\extensions\debug\tests\support\stub\MockerFunctions;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
@@ -16,11 +16,16 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      */
     protected const COOKIE_VALIDATION_KEY = 'wefJDF8sfdsfSDefwqdxj9oq'; // gitleaks:allow (test-only, not a real secret)
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        MockerFunctions::clearMockedMicrotime();
+    }
+
     public function tearDown(): void
     {
         $this->closeApplication();
-
-        TimeFunctions::clearMockedMicrotime();
 
         parent::tearDown();
     }

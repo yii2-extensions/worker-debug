@@ -9,7 +9,7 @@ use PHPUnit\Event\TestSuite\{Started, StartedSubscriber};
 use PHPUnit\Runner\Extension\{Extension, Facade, ParameterCollection};
 use PHPUnit\TextUI\Configuration\Configuration;
 use Xepozz\InternalMocker\{Mocker, MockerState};
-use yii2\extensions\debug\tests\support\stub\TimeFunctions;
+use yii2\extensions\debug\tests\support\stub\MockerFunctions;
 
 final class MockerExtension implements Extension
 {
@@ -37,7 +37,7 @@ final class MockerExtension implements Extension
             [
                 'namespace' => 'yii2\extensions\debug',
                 'name' => 'microtime',
-                'function' => static fn(bool $as_float = false): float|string => TimeFunctions::microtime($as_float),
+                'function' => static fn(bool $as_float = false): float|string => MockerFunctions::microtime($as_float),
             ],
         ];
 

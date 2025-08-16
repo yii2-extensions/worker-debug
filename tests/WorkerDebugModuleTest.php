@@ -10,7 +10,7 @@ use stdClass;
 use yii\base\Event;
 use yii\debug\LogTarget;
 use yii\web\{HeaderCollection, Response};
-use yii2\extensions\debug\tests\support\stub\TimeFunctions;
+use yii2\extensions\debug\tests\support\stub\MockerFunctions;
 use yii2\extensions\debug\WorkerDebugModule;
 
 #[Group('worker-debug')]
@@ -86,7 +86,7 @@ final class WorkerDebugModuleTest extends TestCase
         $startTime = '1234567890.500';
         $currentTime = 1234567893.1234;
 
-        TimeFunctions::setMockedMicrotime($currentTime);
+        MockerFunctions::setMockedMicrotime($currentTime);
 
         $headers = $this->createPartialMock(HeaderCollection::class, ['get', 'set']);
 
