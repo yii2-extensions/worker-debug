@@ -105,7 +105,7 @@ For testing guidance, see.
 [![Total Downloads](https://poser.pugx.org/yii2-extensions/worker-debug/downloads)](https://packagist.org/packages/yii2-extensions/worker-debug)
 [![codecov](https://codecov.io/gh/yii2-extensions/worker-debug/graph/badge.svg?token=Upc4yA23YN)](https://codecov.io/gh/yii2-extensions/worker-debug)
 [![phpstan-level](https://img.shields.io/badge/PHPStan%20level-max-blue)](https://github.com/yii2-extensions/worker-debug/actions/workflows/static.yml)
-[![StyleCI](https://github.styleci.io/repos/698621511/shield?branch=main)](https://github.styleci.io/repos/698621511?branch=main)
+[![StyleCI](https://github.styleci.io/repos/1038618413/shield?branch=main)](https://github.styleci.io/repos/1038618413?branch=main)
 
 ## Our social networks
 
