@@ -13,9 +13,9 @@ namespace yii2\extensions\debug\tests\support\stub;
  * This class allows tests to simulate and manipulate the return value of {@see \microtime()} by maintaining internal
  * state and exposing static methods for fine-grained control.
  *
- * Key features:
- * - Complete simulation of.
- *   - {@see \microtime()} (mockable time for timing tests)
+ * Key features.
+ * - Complete simulation of PHP functions.
+ *   - {@see \microtime()} (mockable time for timing tests).
  * - State reset capability for test isolation and repeatability.
  *
  * @copyright Copyright (C) 2025 Terabytesoftw.
@@ -24,7 +24,7 @@ namespace yii2\extensions\debug\tests\support\stub;
 final class MockerFunctions
 {
     /**
-     * Tracks the number of times {@see \flush()} was called.
+     * Holds the mocked microtime value in seconds; when `null`, the native {@see \microtime()} is used.
      */
     private static float|null $mockedMicrotime = null;
 
@@ -42,7 +42,7 @@ final class MockerFunctions
     /**
      * Returns the mocked or native microtime value based on internal state.
      *
-     * If a mocked microtime value is set, returns it as a float or string depending on the {@see $as_float} argument.
+     * If a mocked microtime value is set, returns it as a float or string depending on the '$as_float' argument.
      *
      * Otherwise, delegates to the native {@see \microtime()} implementation.
      *

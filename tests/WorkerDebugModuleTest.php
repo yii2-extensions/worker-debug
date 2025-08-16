@@ -68,7 +68,8 @@ final class WorkerDebugModuleTest extends TestCase
         self::assertSame(
             dirname(__DIR__) . '/runtime/debug',
             $module->dataPath,
-            "'dataPath' should be equal to 'tests/runtime/debug' to ensure debug data is stored in the expected path.",
+            "'dataPath' should be equal to 'runtime/debug' under the project root to ensure debug data is stored in " .
+            'the expected path.',
         );
 
         $panels = Assert::invokeMethod($module, 'corePanels');

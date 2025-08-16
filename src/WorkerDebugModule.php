@@ -77,14 +77,13 @@ class WorkerDebugModule extends Module
             return;
         }
 
-        $url = Url::toRoute(
-            [
-                '/' . $this->getUniqueId() . '/default/view',
-                'tag' => $this->logTarget->tag,
-            ],
-        );
-
         if ($event->sender instanceof Response) {
+            $url = Url::toRoute(
+                [
+                    '/' . $this->getUniqueId() . '/default/view',
+                    'tag' => $this->logTarget->tag,
+                ],
+            );
             $statelessAppStartTime = Yii::$app->request->getHeaders()->get('statelessAppStartTime') ?? YII_BEGIN_TIME;
             $durationMs = ceil((microtime(true) - (float) $statelessAppStartTime) * 1000);
 

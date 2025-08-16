@@ -72,6 +72,10 @@ final class WorkerTimelinePanelTest extends TestCase
             $result['end'],
             "'end' value should be greater than or equal to 'start' value, indicating correct timeline order.",
         );
+        self::assertIsInt(
+            $result['memory'] ?? null,
+            "'memory' value should be an integer from 'memory_get_peak_usage()'.",
+        );
     }
 
     /**
