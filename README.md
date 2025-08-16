@@ -27,9 +27,13 @@
     </a>  
 </p>
 
+A specialized debug toolbar extension that provides enhanced debugging capabilities for Yii2 applications using PSR 
+Bridge, offering comprehensive insights into application execution, performance metrics, and component interactions.
+
 ## Features
 
-- ✅ **PHP 8.1+**: This package requires PHP 8.1 or higher.
+✅ **Enhanced Debug Toolbar**
+- Real-time performance monitoring and metrics collection.
 
 ## Quick start
 
@@ -56,7 +60,7 @@ Add to your `composer.json`.
 ```json
 {
     "require": {
-        "github_username/github_repository-name": "^0.1"
+        "yii2-extensions/worker-debug": "^0.1"
     }
 }
 ```
