@@ -266,8 +266,6 @@ final class WorkerDebugModuleTest extends TestCase
 
         $headers = $this->createMock(HeaderCollection::class);
 
-        $headers->method('get')->with('statelessAppStartTime')->willReturn($customStartTime);
-
         $response = $this->createPartialMock(Response::class, ['getHeaders']);
 
         $response->method('getHeaders')->willReturn($headers);
@@ -340,8 +338,6 @@ final class WorkerDebugModuleTest extends TestCase
     public function testSetDebugHeadersUsesYiiBeginTimeWhenStatelessAppStartTimeHeaderIsMissing(): void
     {
         $headers = $this->createMock(HeaderCollection::class);
-
-        $headers->method('get')->with('statelessAppStartTime')->willReturn(null);
 
         $response = $this->createPartialMock(Response::class, ['getHeaders']);
 
