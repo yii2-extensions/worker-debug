@@ -24,7 +24,7 @@ final class TimeFunctions
 
     public static function reset(): void
     {
-        self::$mockedMicrotime = null;
+        self::clearMockedMicrotime();
     }
 
     public static function setMockedMicrotime(float $time): void
