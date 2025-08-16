@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace yii2\extensions\debug\tests;
 
 use PHPUnit\Framework\Attributes\Group;
-use yii\web\{HeaderCollection, Response};
+use yii\web\{HeaderCollection, Request};
 use yii2\extensions\debug\WorkerTimelinePanel;
 
 #[Group('worker-debug')]
@@ -15,18 +15,18 @@ final class WorkerTimelinePanelTest extends TestCase
     {
         $customStartTime = (string) (microtime(true) - 2);
 
-        $headers = $this->createMock(HeaderCollection::class);
+        $headers = $this->createPartialMock(HeaderCollection::class, ['get']);
 
         $headers->method('get')->with('statelessAppStartTime')->willReturn($customStartTime);
 
-        $response = $this->createMock(Response::class);
+        $request = $this->createPartialMock(Request::class, ['getHeaders']);
 
-        $response->method('getHeaders')->willReturn($headers);
+        $request->method('getHeaders')->willReturn($headers);
 
         $this->webApplication(
             [
                 'components' => [
-                    'response' => $response,
+                    'request' => $request,
                 ],
             ],
         );
@@ -62,18 +62,18 @@ final class WorkerTimelinePanelTest extends TestCase
 
     public function testSaveReturnsCorrectDataStructureWithDefaultStartTime(): void
     {
-        $headers = $this->createMock(HeaderCollection::class);
+        $headers = $this->createPartialMock(HeaderCollection::class, ['get']);
 
         $headers->method('get')->with('statelessAppStartTime')->willReturn(null);
 
-        $response = $this->createMock(Response::class);
+        $request = $this->createPartialMock(Request::class, ['getHeaders']);
 
-        $response->method('getHeaders')->willReturn($headers);
+        $request->method('getHeaders')->willReturn($headers);
 
         $this->webApplication(
             [
                 'components' => [
-                    'response' => $response,
+                    'request' => $request,
                 ],
             ],
         );

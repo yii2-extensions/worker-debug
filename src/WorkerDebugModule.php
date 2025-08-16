@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace yii2\extensions\debug;
 
+use Yii;
 use yii\debug\Module;
 use yii\helpers\Url;
 use yii\web\Response;
@@ -38,7 +39,7 @@ class WorkerDebugModule extends Module
         );
 
         if ($event->sender instanceof Response) {
-            $statelessAppStartTime = $event->sender->getHeaders()->get('statelessAppStartTime') ?? YII_BEGIN_TIME;
+            $statelessAppStartTime = Yii::$app->request->getHeaders()->get('statelessAppStartTime') ?? YII_BEGIN_TIME;
             $durationMs = ceil((microtime(true) - (float) $statelessAppStartTime) * 1000);
 
             $event->sender->getHeaders()
