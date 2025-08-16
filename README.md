@@ -2,7 +2,7 @@
     <a href="https://github.com/yii2-extensions/worker-debug" target="_blank">
         <img src="https://www.yiiframework.com/image/yii_logo_light.svg" alt="Yii Framework">
     </a>
-    <h1 align="center">Debug toolbar for extension PSR Bridge.</h1>
+    <h1 align="center">Debug toolbar for the Yii2 PSR Bridge extension.</h1>
     <br>
 </p>
 
@@ -27,7 +27,7 @@
     </a>  
 </p>
 
-A specialized debug toolbar extension that provides enhanced debugging capabilities for Yii2 applications using PSR 
+A specialized debug toolbar extension that provides enhanced debugging capabilities for Yii2 applications using the PSR 
 Bridge, offering comprehensive insights into application execution, performance metrics, and component interactions.
 
 ## Features
@@ -104,7 +104,7 @@ For testing guidance, see.
 [![Latest Stable Version](https://poser.pugx.org/yii2-extensions/worker-debug/v)](https://github.com/yii2-extensions/worker-debug/releases)
 [![Total Downloads](https://poser.pugx.org/yii2-extensions/worker-debug/downloads)](https://packagist.org/packages/yii2-extensions/worker-debug)
 [![codecov](https://codecov.io/gh/yii2-extensions/worker-debug/graph/badge.svg?token=Upc4yA23YN)](https://codecov.io/gh/yii2-extensions/worker-debug)
-[![phpstan-level](https://img.shields.io/badge/PHPStan%20level-max-blue)](https://github.com/yii2-extensions/localeurls/actions/workflows/static.yml)
+[![phpstan-level](https://img.shields.io/badge/PHPStan%20level-max-blue)](https://github.com/yii2-extensions/worker-debug/actions/workflows/static.yml)
 [![StyleCI](https://github.styleci.io/repos/698621511/shield?branch=main)](https://github.styleci.io/repos/698621511?branch=main)
 
 ## Our social networks
