@@ -7,7 +7,7 @@ namespace yii2\extensions\debug\tests;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\{Application, HeaderCollection, Request};
-use yii2\extensions\debug\tests\support\stub\TimeFunctions;
+use yii2\extensions\debug\tests\support\stub\MockerFunctions;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
@@ -20,7 +20,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     {
         $this->closeApplication();
 
-        TimeFunctions::clearMockedMicrotime();
+        MockerFunctions::clearMockedMicrotime();
 
         parent::tearDown();
     }
