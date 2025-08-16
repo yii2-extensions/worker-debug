@@ -39,10 +39,11 @@ final class WorkerTimelinePanelTest extends TestCase
             $result['start'] ?? null,
             "'start' value should be a float representing the request start time.",
         );
-        self::assertGreaterThan(
-            1.5,
-            $result['end'] ?? null,
-            "'end' value should be greater than '1.5' seconds when using custom start time from '2' seconds ago.",
+        self::assertEqualsWithDelta(
+            (float) $customStartTime,
+            $result['start'],
+            0.005,
+            "'start' should match header-provided start time within 5ms tolerance.",
         );
         self::assertIsFloat(
             $result['end'] ?? null,
@@ -56,7 +57,7 @@ final class WorkerTimelinePanelTest extends TestCase
         self::assertGreaterThanOrEqual(
             $result['start'],
             $result['end'],
-            "'start' value should be greater than or equal to 'end' value, indicating correct timeline order.",
+            "'end' value should be greater than or equal to 'start' value, indicating correct timeline order.",
         );
     }
 
