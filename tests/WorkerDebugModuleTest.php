@@ -83,7 +83,27 @@ final class WorkerDebugModuleTest extends TestCase
 
     public function testSetDebugHeadersCalculatesCorrectDurationInMilliseconds(): void
     {
-        $this->webApplication();
+        $startTime = '1234567890.500';
+        $currentTime = 1234567893.1234;
+
+        TimeFunctions::setMockedMicrotime($currentTime);
+
+        $headers = $this->createPartialMock(HeaderCollection::class, ['get', 'set']);
+
+        $headers->method('get')->with('statelessAppStartTime')->willReturn($startTime);
+
+        $response = $this->createPartialMock(Response::class, ['getHeaders']);
+
+        $response->method('getHeaders')->willReturn($headers);
+
+        $this->webApplication(
+            [
+                'components' => [
+                    'request' => $this->buildRequestWithStatelessStart($startTime),
+                    'response' => $response,
+                ],
+            ],
+        );
 
         $module = $this->createPartialMock(
             WorkerDebugModule::class,
@@ -100,15 +120,6 @@ final class WorkerDebugModuleTest extends TestCase
 
         $logTarget->tag = 'test-debug-tag';
         $module->logTarget = $logTarget;
-
-        $startTime = '1234567890.500';
-        $currentTime = 1234567893.1234;
-
-        TimeFunctions::setMockedMicrotime($currentTime);
-
-        $headers = $this->createMock(HeaderCollection::class);
-
-        $headers->method('get')->with('statelessAppStartTime')->willReturn($startTime);
 
         $durationCaptured = false;
 
@@ -131,10 +142,6 @@ final class WorkerDebugModuleTest extends TestCase
                 },
             );
 
-        $response = $this->createMock(Response::class);
-
-        $response->method('getHeaders')->willReturn($headers);
-
         $event = new Event();
 
         $event->sender = $response;
@@ -149,15 +156,21 @@ final class WorkerDebugModuleTest extends TestCase
 
     public function testSetDebugHeadersDoesNothingWhenAccessIsNotAllowed(): void
     {
-        $this->webApplication();
+        $response = $this->createPartialMock(Response::class, ['getHeaders']);
+
+        $response->expects(self::never())->method('getHeaders');
+
+        $this->webApplication(
+            [
+                'components' => [
+                    'response' => $response,
+                ],
+            ],
+        );
 
         $module = $this->createPartialMock(WorkerDebugModule::class, ['checkAccess']);
 
         $module->method('checkAccess')->willReturn(false);
-
-        $response = $this->createMock(Response::class);
-
-        $response->expects(self::never())->method('getHeaders');
 
         $logTarget = $this->createMock(LogTarget::class);
 
@@ -173,17 +186,23 @@ final class WorkerDebugModuleTest extends TestCase
 
     public function testSetDebugHeadersDoesNothingWhenLogTargetIsArray(): void
     {
-        $this->webApplication();
+        $response = $this->createPartialMock(Response::class, ['getHeaders']);
+
+        $response->expects(self::never())->method('getHeaders');
+
+        $this->webApplication(
+            [
+                'components' => [
+                    'response' => $response,
+                ],
+            ],
+        );
 
         $module = $this->createPartialMock(WorkerDebugModule::class, ['checkAccess']);
 
         $module->method('checkAccess')->willReturn(true);
 
         $module->logTarget = ['array-target'];
-
-        $response = $this->createMock(Response::class);
-
-        $response->expects(self::never())->method('getHeaders');
 
         $event = new Event();
 
@@ -194,17 +213,23 @@ final class WorkerDebugModuleTest extends TestCase
 
     public function testSetDebugHeadersDoesNothingWhenLogTargetIsString(): void
     {
-        $this->webApplication();
+        $response = $this->createPartialMock(Response::class, ['getHeaders']);
+
+        $response->expects(self::never())->method('getHeaders');
+
+        $this->webApplication(
+            [
+                'components' => [
+                    'response' => $response,
+                ],
+            ],
+        );
 
         $module = $this->createPartialMock(WorkerDebugModule::class, ['checkAccess']);
 
         $module->method('checkAccess')->willReturn(true);
 
         $module->logTarget = 'string-target';
-
-        $response = $this->createMock(Response::class);
-
-        $response->expects(self::never())->method('getHeaders');
 
         $event = new Event();
 
@@ -235,9 +260,24 @@ final class WorkerDebugModuleTest extends TestCase
         $module->setDebugHeaders($event);
     }
 
-    public function testSetDebugHeadersSetsCorrectHeadersWhenConditionsAreMet(): void
+    public function testSetDebugHeadersUsesStatelessAppStartTimeWhenAvailable(): void
     {
-        $this->webApplication();
+        $customStartTime = (string) (microtime(true) - 1);
+
+        $headers = $this->createMock(HeaderCollection::class);
+
+        $response = $this->createPartialMock(Response::class, ['getHeaders']);
+
+        $response->method('getHeaders')->willReturn($headers);
+
+        $this->webApplication(
+            [
+                'components' => [
+                    'request' => $this->buildRequestWithStatelessStart($customStartTime),
+                    'response' => $response,
+                ],
+            ],
+        );
 
         $module = $this->createPartialMock(
             WorkerDebugModule::class,
@@ -255,9 +295,77 @@ final class WorkerDebugModuleTest extends TestCase
         $logTarget->tag = 'test-debug-tag';
         $module->logTarget = $logTarget;
 
+        $durationCaptured = false;
+
+        $headers
+            ->expects(self::exactly(3))
+            ->method('set')
+            ->willReturnCallback(
+                static function (string $name, string $value) use ($headers, &$durationCaptured): HeaderCollection {
+                    if ($name === 'X-Debug-Duration') {
+                        self::assertGreaterThan(
+                            0,
+                            (float) $value,
+                            "'X-Debug-Duration' header should be greater than '0' when 'statelessAppStartTime' is " .
+                            "available, got: {$value}.",
+                        );
+                        self::assertLessThan(
+                            10000,
+                            (float) $value,
+                            "'X-Debug-Duration' should be a reasonable duration in milliseconds, got: {$value}. " .
+                            'This suggests incorrect calculation (possibly addition instead of subtraction).',
+                        );
+
+                        $durationCaptured = true;
+                    }
+
+                    return $headers;
+                },
+            );
+
+        $event = new Event();
+
+        $event->sender = $response;
+
+        $module->setDebugHeaders($event);
+
+        self::assertTrue(
+            $durationCaptured,
+            "'X-Debug-Duration' header should be set when 'statelessAppStartTime' is available.",
+        );
+    }
+
+    public function testSetDebugHeadersUsesYiiBeginTimeWhenStatelessAppStartTimeHeaderIsMissing(): void
+    {
         $headers = $this->createMock(HeaderCollection::class);
 
-        $headers->method('get')->with('statelessAppStartTime')->willReturn(null);
+        $response = $this->createPartialMock(Response::class, ['getHeaders']);
+
+        $response->method('getHeaders')->willReturn($headers);
+
+        $this->webApplication(
+            [
+                'components' => [
+                    'response' => $response,
+                ],
+            ],
+        );
+
+        $module = $this->createPartialMock(
+            WorkerDebugModule::class,
+            [
+                'checkAccess',
+                'getUniqueId',
+            ],
+        );
+
+        $module->method('checkAccess')->willReturn(true);
+        $module->method('getUniqueId')->willReturn('test-module');
+
+        $logTarget = $this->createMock(LogTarget::class);
+
+        $logTarget->tag = 'test-debug-tag';
+        $module->logTarget = $logTarget;
 
         $callCount = 0;
 
@@ -309,84 +417,10 @@ final class WorkerDebugModuleTest extends TestCase
                 },
             );
 
-        $response = $this->createMock(Response::class);
-
-        $response->method('getHeaders')->willReturn($headers);
-
         $event = new Event();
 
         $event->sender = $response;
 
         $module->setDebugHeaders($event);
-    }
-
-    public function testSetDebugHeadersUsesStatelessAppStartTimeWhenAvailable(): void
-    {
-        $this->webApplication();
-
-        $module = $this->createPartialMock(
-            WorkerDebugModule::class,
-            [
-                'checkAccess',
-                'getUniqueId',
-            ],
-        );
-
-        $module->method('checkAccess')->willReturn(true);
-        $module->method('getUniqueId')->willReturn('test-module');
-
-        $logTarget = $this->createMock(LogTarget::class);
-
-        $logTarget->tag = 'test-debug-tag';
-        $module->logTarget = $logTarget;
-
-        $customStartTime = (string) (microtime(true) - 1);
-
-        $headers = $this->createMock(HeaderCollection::class);
-
-        $headers->method('get')->with('statelessAppStartTime')->willReturn($customStartTime);
-
-        $durationCaptured = false;
-
-        $headers
-            ->expects(self::exactly(3))
-            ->method('set')
-            ->willReturnCallback(
-                static function (string $name, string $value) use ($headers, &$durationCaptured): HeaderCollection {
-                    if ($name === 'X-Debug-Duration') {
-                        self::assertGreaterThan(
-                            0,
-                            (float) $value,
-                            "'X-Debug-Duration' header should be greater than '0' when 'statelessAppStartTime' is " .
-                            "available, got: {$value}.",
-                        );
-                        self::assertLessThan(
-                            10000,
-                            (float) $value,
-                            "'X-Debug-Duration' should be a reasonable duration in milliseconds, got: {$value}. " .
-                            'This suggests incorrect calculation (possibly addition instead of subtraction).',
-                        );
-
-                        $durationCaptured = true;
-                    }
-
-                    return $headers;
-                },
-            );
-
-        $response = $this->createMock(Response::class);
-
-        $response->method('getHeaders')->willReturn($headers);
-
-        $event = new Event();
-
-        $event->sender = $response;
-
-        $module->setDebugHeaders($event);
-
-        self::assertTrue(
-            $durationCaptured,
-            "'X-Debug-Duration' header should be set when 'statelessAppStartTime' is available.",
-        );
     }
 }

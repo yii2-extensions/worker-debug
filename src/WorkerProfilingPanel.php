@@ -15,7 +15,7 @@ class WorkerProfilingPanel extends ProfilingPanel
      */
     public function save(): array
     {
-        $statelessAppStartTime = Yii::$app->response->getHeaders()->get('statelessAppStartTime') ?? YII_BEGIN_TIME;
+        $statelessAppStartTime = Yii::$app->request->getHeaders()->get('statelessAppStartTime') ?? YII_BEGIN_TIME;
 
         return [
             'memory' => memory_get_peak_usage(),

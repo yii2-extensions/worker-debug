@@ -6,7 +6,6 @@ namespace yii2\extensions\debug\tests;
 
 use PHPUnit\Framework\Attributes\Group;
 use yii\log\Logger;
-use yii\web\{HeaderCollection, Response};
 use yii2\extensions\debug\WorkerProfilingPanel;
 
 #[Group('worker-debug')]
@@ -16,18 +15,10 @@ final class WorkerProfilingPanelTest extends TestCase
     {
         $customStartTime = (string) (microtime(true) - 2);
 
-        $headers = $this->createMock(HeaderCollection::class);
-
-        $headers->method('get')->with('statelessAppStartTime')->willReturn($customStartTime);
-
-        $response = $this->createMock(Response::class);
-
-        $response->method('getHeaders')->willReturn($headers);
-
         $this->webApplication(
             [
                 'components' => [
-                    'response' => $response,
+                    'request' => $this->buildRequestWithStatelessStart($customStartTime),
                 ],
             ],
         );
@@ -64,18 +55,10 @@ final class WorkerProfilingPanelTest extends TestCase
 
     public function testSaveReturnsCorrectDataStructureWithDefaultStartTime(): void
     {
-        $headers = $this->createMock(HeaderCollection::class);
-
-        $headers->method('get')->with('statelessAppStartTime')->willReturn(null);
-
-        $response = $this->createMock(Response::class);
-
-        $response->method('getHeaders')->willReturn($headers);
-
         $this->webApplication(
             [
                 'components' => [
-                    'response' => $response,
+                    'request' => $this->buildRequestWithStatelessStart(null),
                 ],
             ],
         );
@@ -125,18 +108,10 @@ final class WorkerProfilingPanelTest extends TestCase
 
     public function testSaveUsesMemoryGetPeakUsage(): void
     {
-        $headers = $this->createMock(HeaderCollection::class);
-
-        $headers->method('get')->with('statelessAppStartTime')->willReturn(null);
-
-        $response = $this->createMock(Response::class);
-
-        $response->method('getHeaders')->willReturn($headers);
-
         $this->webApplication(
             [
                 'components' => [
-                    'response' => $response,
+                    'request' => $this->buildRequestWithStatelessStart(null),
                 ],
             ],
         );
