@@ -5,12 +5,36 @@ declare(strict_types=1);
 namespace yii2\extensions\debug\tests;
 
 use PHPUnit\Framework\Attributes\Group;
+use yii\base\InvalidConfigException;
 use yii\log\Logger;
 use yii2\extensions\debug\WorkerProfilingPanel;
 
+use function memory_get_peak_usage;
+
+/**
+ * Test suite for {@see WorkerProfilingPanel} class functionality and behavior.
+ *
+ * Verifies the profiling panel ability to capture and report execution time, memory usage, and profiling messages under
+ * different application start time scenarios.
+ *
+ * These tests ensure the panel correctly calculates execution duration using custom and default start times, returns
+ * the expected data structure, and accurately reports peak memory usage.
+ *
+ * Test coverage.
+ * - Custom start time handling for execution duration calculation.
+ * - Default start time fallback and data structure validation.
+ * - Memory usage reporting using {@see memory_get_peak_usage()}.
+ * - Profiling message retrieval and structure.
+ *
+ * @copyright Copyright (C) 2025 Terabytesoftw.
+ * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
+ */
 #[Group('worker-debug')]
 final class WorkerProfilingPanelTest extends TestCase
 {
+    /**
+     * @throws InvalidConfigException if the configuration is invalid or incomplete.
+     */
     public function testSaveReturnsCorrectDataStructureWithCustomStartTime(): void
     {
         $customStartTime = (string) (microtime(true) - 2);
@@ -53,6 +77,9 @@ final class WorkerProfilingPanelTest extends TestCase
         );
     }
 
+    /**
+     * @throws InvalidConfigException if the configuration is invalid or incomplete.
+     */
     public function testSaveReturnsCorrectDataStructureWithDefaultStartTime(): void
     {
         $this->webApplication(
@@ -106,6 +133,9 @@ final class WorkerProfilingPanelTest extends TestCase
         );
     }
 
+    /**
+     * @throws InvalidConfigException if the configuration is invalid or incomplete.
+     */
     public function testSaveUsesMemoryGetPeakUsage(): void
     {
         $this->webApplication(

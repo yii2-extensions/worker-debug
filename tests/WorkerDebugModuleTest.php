@@ -7,15 +7,52 @@ namespace yii2\extensions\debug\tests;
 use PHPForge\Support\Assert;
 use PHPUnit\Framework\Attributes\Group;
 use stdClass;
-use yii\base\Event;
+use yii\base\{Event, InvalidConfigException};
 use yii\debug\LogTarget;
+use yii\debug\panels\{
+    AssetPanel,
+    ConfigPanel,
+    DbPanel,
+    DumpPanel,
+    EventPanel,
+    LogPanel,
+    MailPanel,
+    RequestPanel,
+    RouterPanel,
+    UserPanel,
+};
 use yii\web\{HeaderCollection, Response};
 use yii2\extensions\debug\tests\support\stub\MockerFunctions;
-use yii2\extensions\debug\WorkerDebugModule;
+use yii2\extensions\debug\{WorkerDebugModule, WorkerProfilingPanel, WorkerTimelinePanel};
 
+use function dirname;
+
+/**
+ * Test suite for {@see WorkerDebugModule} class functionality and behavior.
+ *
+ * Verifies the debug module ability to configure core panels, set debug headers, and handle various edge cases related
+ * to header calculation, log target types, and access control.
+ *
+ * These tests ensure correct integration of custom and standard debug panels, accurate duration calculation for debug
+ * headers, and robust handling of different log target and response scenarios.
+ *
+ * Test coverage.
+ * - Access control for debug header setting.
+ * - Core panel configuration and default values.
+ * - Debug header calculation and duration rounding.
+ * - Handling of stateless and Yii start times.
+ * - Log target type validation (object, array, string).
+ * - Response sender type validation.
+ *
+ * @copyright Copyright (C) 2025 Terabytesoftw.
+ * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
+ */
 #[Group('worker-debug')]
 final class WorkerDebugModuleTest extends TestCase
 {
+    /**
+     * @throws InvalidConfigException if the configuration is invalid or incomplete.
+     */
     public function testReturnCorePanelsAndModuleDefaults(): void
     {
         $this->webApplication();
@@ -31,7 +68,8 @@ final class WorkerDebugModuleTest extends TestCase
         self::assertSame(
             dirname(__DIR__) . '/runtime/debug',
             $module->dataPath,
-            "'dataPath' should be equal to 'tests/runtime/debug' to ensure debug data is stored in the expected path.",
+            "'dataPath' should be equal to 'runtime/debug' under the project root to ensure debug data is stored in " .
+            'the expected path.',
         );
 
         $panels = Assert::invokeMethod($module, 'corePanels');
@@ -39,40 +77,40 @@ final class WorkerDebugModuleTest extends TestCase
         self::assertSame(
             [
                 'config' => [
-                    'class' => 'yii\debug\panels\ConfigPanel',
+                    'class' => ConfigPanel::class,
                 ],
                 'log' => [
-                    'class' => 'yii\debug\panels\LogPanel',
+                    'class' => LogPanel::class,
                 ],
                 'profiling' => [
-                    'class' => 'yii2\extensions\debug\WorkerProfilingPanel',
+                    'class' => WorkerProfilingPanel::class,
                 ],
                 'db' => [
-                    'class' => 'yii\debug\panels\DbPanel',
+                    'class' => DbPanel::class,
                 ],
                 'event' => [
-                    'class' => 'yii\debug\panels\EventPanel',
+                    'class' => EventPanel::class,
                 ],
                 'mail' => [
-                    'class' => 'yii\debug\panels\MailPanel',
+                    'class' => MailPanel::class,
                 ],
                 'timeline' => [
-                    'class' => 'yii2\extensions\debug\WorkerTimelinePanel',
+                    'class' => WorkerTimelinePanel::class,
                 ],
                 'dump' => [
-                    'class' => 'yii\debug\panels\DumpPanel',
+                    'class' => DumpPanel::class,
                 ],
                 'router' => [
-                    'class' => 'yii\debug\panels\RouterPanel',
+                    'class' => RouterPanel::class,
                 ],
                 'request' => [
-                    'class' => 'yii\debug\panels\RequestPanel',
+                    'class' => RequestPanel::class,
                 ],
                 'user' => [
-                    'class' => 'yii\debug\panels\UserPanel',
+                    'class' => UserPanel::class,
                 ],
                 'asset' => [
-                    'class' => 'yii\debug\panels\AssetPanel',
+                    'class' => AssetPanel::class,
                 ],
             ],
             $panels,
@@ -81,6 +119,9 @@ final class WorkerDebugModuleTest extends TestCase
         );
     }
 
+    /**
+     * @throws InvalidConfigException if the configuration is invalid or incomplete.
+     */
     public function testSetDebugHeadersCalculatesCorrectDurationInMilliseconds(): void
     {
         $startTime = '1234567890.500';
@@ -154,6 +195,9 @@ final class WorkerDebugModuleTest extends TestCase
         );
     }
 
+    /**
+     * @throws InvalidConfigException if the configuration is invalid or incomplete.
+     */
     public function testSetDebugHeadersDoesNothingWhenAccessIsNotAllowed(): void
     {
         $response = $this->createPartialMock(Response::class, ['getHeaders']);
@@ -184,6 +228,9 @@ final class WorkerDebugModuleTest extends TestCase
         $module->setDebugHeaders($event);
     }
 
+    /**
+     * @throws InvalidConfigException if the configuration is invalid or incomplete.
+     */
     public function testSetDebugHeadersDoesNothingWhenLogTargetIsArray(): void
     {
         $response = $this->createPartialMock(Response::class, ['getHeaders']);
@@ -211,6 +258,9 @@ final class WorkerDebugModuleTest extends TestCase
         $module->setDebugHeaders($event);
     }
 
+    /**
+     * @throws InvalidConfigException if the configuration is invalid or incomplete.
+     */
     public function testSetDebugHeadersDoesNothingWhenLogTargetIsString(): void
     {
         $response = $this->createPartialMock(Response::class, ['getHeaders']);
@@ -238,6 +288,9 @@ final class WorkerDebugModuleTest extends TestCase
         $module->setDebugHeaders($event);
     }
 
+    /**
+     * @throws InvalidConfigException if the configuration is invalid or incomplete.
+     */
     public function testSetDebugHeadersDoesNothingWhenSenderIsNotResponse(): void
     {
         $this->webApplication();
@@ -260,6 +313,9 @@ final class WorkerDebugModuleTest extends TestCase
         $module->setDebugHeaders($event);
     }
 
+    /**
+     * @throws InvalidConfigException if the configuration is invalid or incomplete.
+     */
     public function testSetDebugHeadersUsesStatelessAppStartTimeWhenAvailable(): void
     {
         $customStartTime = (string) (microtime(true) - 1);
@@ -335,6 +391,9 @@ final class WorkerDebugModuleTest extends TestCase
         );
     }
 
+    /**
+     * @throws InvalidConfigException if the configuration is invalid or incomplete.
+     */
     public function testSetDebugHeadersUsesYiiBeginTimeWhenStatelessAppStartTimeHeaderIsMissing(): void
     {
         $headers = $this->createMock(HeaderCollection::class);

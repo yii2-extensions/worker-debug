@@ -5,11 +5,33 @@ declare(strict_types=1);
 namespace yii2\extensions\debug\tests;
 
 use PHPUnit\Framework\Attributes\Group;
+use yii\base\InvalidConfigException;
 use yii2\extensions\debug\WorkerTimelinePanel;
 
+/**
+ * Test suite for {@see WorkerTimelinePanel} class functionality and behavior.
+ *
+ * Verifies the timeline panel ability to capture and report request start and end times, as well as peak memory usage,
+ * under different application start time scenarios.
+ *
+ * These tests ensure the panel correctly calculates timeline boundaries using custom and default start times, returns
+ * the expected data structure, and accurately reports peak memory usage.
+ *
+ * Test coverage.
+ * - Custom start time handling for timeline calculation.
+ * - Default start time fallback and data structure validation.
+ * - Memory usage reporting using {@see \memory_get_peak_usage()}.
+ * - Timeline order and value assertions.
+ *
+ * @copyright Copyright (C) 2025 Terabytesoftw.
+ * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
+ */
 #[Group('worker-debug')]
 final class WorkerTimelinePanelTest extends TestCase
 {
+    /**
+     * @throws InvalidConfigException if the configuration is invalid or incomplete.
+     */
     public function testSaveReturnsCorrectDataStructureWithCustomStartTime(): void
     {
         $customStartTime = (string) (microtime(true) - 2);
@@ -50,8 +72,15 @@ final class WorkerTimelinePanelTest extends TestCase
             $result['end'],
             "'end' value should be greater than or equal to 'start' value, indicating correct timeline order.",
         );
+        self::assertIsInt(
+            $result['memory'] ?? null,
+            "'memory' value should be an integer from 'memory_get_peak_usage()'.",
+        );
     }
 
+    /**
+     * @throws InvalidConfigException if the configuration is invalid or incomplete.
+     */
     public function testSaveReturnsCorrectDataStructureWithDefaultStartTime(): void
     {
         $this->webApplication(
