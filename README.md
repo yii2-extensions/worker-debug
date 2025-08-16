@@ -95,7 +95,7 @@ if (YII_ENV_DEV) {
 
 ## Documentation
 
-For detailed configuration options and advanced usage.
+For testing guidance, see.
 
 - 🧪 [Testing Guide](docs/testing.md)
 
