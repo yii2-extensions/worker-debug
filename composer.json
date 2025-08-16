@@ -9,8 +9,6 @@
         "psr-bridge"
     ],
     "license": "BSD-3-Clause",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "require": {
         "php": ">=8.1",
         "psr/http-factory": "^1.1",
