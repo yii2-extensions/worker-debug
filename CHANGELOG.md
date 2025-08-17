@@ -1,5 +1,7 @@
 # Change Log
 
+## 0.1.2 Under development
+
 ## 0.1.1 August 17, 2025
 
 - Bug #8: Add comprehensive PHPDoc for all classes (@terabytesoftw)
