@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace yii2\extensions\debug\tests;
 
-use PHPForge\Support\Assert;
 use PHPUnit\Framework\Attributes\Group;
 use stdClass;
 use yii\base\{Event, InvalidConfigException};
