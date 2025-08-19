@@ -72,7 +72,7 @@ final class WorkerDebugModuleTest extends TestCase
             'the expected path.',
         );
 
-        $panels = Assert::invokeMethod($module, 'corePanels');
+        $panels = self::invokeMethod($module, 'corePanels');
 
         self::assertSame(
             [
