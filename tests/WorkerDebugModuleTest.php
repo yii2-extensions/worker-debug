@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace yii2\extensions\debug\tests;
 
-use PHPForge\Support\Assert;
 use PHPUnit\Framework\Attributes\Group;
 use stdClass;
 use yii\base\{Event, InvalidConfigException};
@@ -72,7 +71,7 @@ final class WorkerDebugModuleTest extends TestCase
             'the expected path.',
         );
 
-        $panels = Assert::invokeMethod($module, 'corePanels');
+        $panels = self::invokeMethod($module, 'corePanels');
 
         self::assertSame(
             [
