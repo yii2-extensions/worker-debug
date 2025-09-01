@@ -71,8 +71,6 @@ Then run.
 composer update
 ```
 
-### Basic Usage
-
 Add the following code to your configuration file (`web.php`).
 
 ```php
