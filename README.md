@@ -8,22 +8,22 @@
 
 <p align="center">
     <a href="https://www.php.net/releases/8.1/en.php" target="_blank">
-        <img src="https://img.shields.io/badge/PHP-%3E%3D8.1-787CB5" alt="PHP Version">
+        <img src="https://img.shields.io/badge/%3E%3D8.1-777BB4.svg?style=for-the-badge&logo=php&logoColor=white" alt="PHP version">
     </a>
     <a href="https://github.com/yiisoft/yii2/tree/2.0.53" target="_blank">
-        <img src="https://img.shields.io/badge/Yii2%20-2.0.53-blue" alt="Yii2 2.0.53">
+        <img src="https://img.shields.io/badge/2.0.x-0073AA.svg?style=for-the-badge&logo=yii&logoColor=white" alt="Yii 2.0.x">
     </a>
     <a href="https://github.com/yiisoft/yii2/tree/22.0" target="_blank">
-        <img src="https://img.shields.io/badge/Yii2%20-22-blue" alt="Yii2 22.0">
+        <img src="https://img.shields.io/badge/22.0.x-0073AA.svg?style=for-the-badge&logo=yii&logoColor=white" alt="Yii 22.0.x">
     </a>
     <a href="https://github.com/yii2-extensions/worker-debug/actions/workflows/build.yml" target="_blank">
-        <img src="https://github.com/yii2-extensions/worker-debug/actions/workflows/build.yml/badge.svg" alt="PHPUnit">
+        <img src="https://img.shields.io/github/actions/workflow/status/yii2-extensions/worker-debug/build.yml?style=for-the-badge&label=PHPUnit" alt="PHPUnit">
     </a> 
     <a href="https://dashboard.stryker-mutator.io/reports/github.com/yii2-extensions/worker-debug/main" target="_blank">
-        <img src="https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fyii2-extensions%2Fworker-debug%2Fmain" alt="Mutation Testing">
+        <img src="https://img.shields.io/endpoint?style=for-the-badge&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fyii2-extensions%2Fworker-debug%2Fmain" alt="Mutation Testing">
     </a>    
     <a href="https://github.com/yii2-extensions/worker-debug/actions/workflows/static.yml" target="_blank">        
-        <img src="https://github.com/yii2-extensions/worker-debug/actions/workflows/static.yml/badge.svg" alt="Static Analysis">
+        <img src="https://img.shields.io/github/actions/workflow/status/yii2-extensions/worker-debug/static.yml?style=for-the-badge&label=PHPStan" alt="PHPStan">
     </a>  
 </p>
 
@@ -99,18 +99,21 @@ For testing guidance, see.
 
 - 🧪 [Testing Guide](docs/testing.md)
 
+## Package information
+
+[![Latest Stable Version](https://img.shields.io/packagist/v/yii2-extensions/worker-debug.svg?style=for-the-badge&logo=packagist&logoColor=white&label=Stable)](https://packagist.org/packages/yii2-extensions/worker-debug)
+[![Total Downloads](https://img.shields.io/packagist/dt/yii2-extensions/worker-debug.svg?style=for-the-badge&logo=packagist&logoColor=white&label=Downloads)](https://packagist.org/packages/yii2-extensions/worker-debug)
+
 ## Quality code
 
-[![Latest Stable Version](https://poser.pugx.org/yii2-extensions/worker-debug/v)](https://github.com/yii2-extensions/worker-debug/releases)
-[![Total Downloads](https://poser.pugx.org/yii2-extensions/worker-debug/downloads)](https://packagist.org/packages/yii2-extensions/worker-debug)
-[![codecov](https://codecov.io/gh/yii2-extensions/worker-debug/graph/badge.svg?token=Upc4yA23YN)](https://codecov.io/gh/yii2-extensions/worker-debug)
-[![phpstan-level](https://img.shields.io/badge/PHPStan%20level-max-blue)](https://github.com/yii2-extensions/worker-debug/actions/workflows/static.yml)
-[![StyleCI](https://github.styleci.io/repos/1038618413/shield?branch=main)](https://github.styleci.io/repos/1038618413?branch=main)
+[![codecov](https://img.shields.io/codecov/c/github/yii2-extensions/worker-debug.svg?style=for-the-badge&logo=codecov&logoColor=white&label=Coverage)](https://codecov.io/gh/yii2-extensions/worker-debug)
+[![phpstan-level](https://img.shields.io/badge/PHPStan%20level-max-blue?style=for-the-badge)](https://github.com/yii2-extensions/worker-debug/actions/workflows/static.yml)
+[![StyleCI](https://img.shields.io/badge/StyleCI-Passed-44CC11.svg?style=for-the-badge&logo=styleci&logoColor=white)](https://github.styleci.io/repos/1038618413?branch=main)
 
 ## Our social networks
 
-[![X](https://img.shields.io/badge/follow-@terabytesoftw-1DA1F2?logo=x&logoColor=1DA1F2&labelColor=555555&style=flat)](https://x.com/Terabytesoftw)
+[![Follow on X](https://img.shields.io/badge/-Follow%20on%20X-1DA1F2.svg?style=for-the-badge&logo=x&logoColor=white&labelColor=000000)](https://x.com/Terabytesoftw)
 
 ## License
 
-[![License](https://img.shields.io/github/license/yii2-extensions/worker-debug?cacheSeconds=0)](LICENSE.md)
+[![License](https://img.shields.io/github/license/yii2-extensions/psr-bridge?style=for-the-badge&logo=opensourceinitiative&logoColor=white&labelColor=333333)](LICENSE.md)
