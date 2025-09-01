@@ -35,8 +35,6 @@ Bridge, offering comprehensive insights into application execution, performance 
 ✅ **Enhanced Debug Toolbar**
 - Real-time performance monitoring and metrics collection.
 
-## Quick start
-
 ### System requirements
 
 - [`PHP`](https://www.php.net/downloads) 8.1 or higher.
@@ -71,7 +69,7 @@ Then run.
 composer update
 ```
 
-### Basic Usage
+### Quick start
 
 Add the following code to your configuration file (`web.php`).
 
