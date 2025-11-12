@@ -10,6 +10,8 @@
 - Bug #11: Update `php-forge/support` version to `^0.2` in `composer.json`, refactor test method invocation in `WorkerDebugModuleTest.php` class (@terabytesoftw)
 - Bug #14: Update badge styles and links in `README.md` for improved visibility and accuracy (@terabytesoftw)
 - Bug #15: Remove redundant `Basic Usage` section from `README.md` (@terabytesoftw)
+- Dep #16: Bump `php-forge/actions` from `1` to `2` (@dependabot)
+- Dep #17: Update `symplify/easy-coding-standard requirement` from `^12.5` to `^13.0` (@dependabot)
 
 ## 0.1.0 August 16, 2025
 
