@@ -9,7 +9,7 @@ use PHPUnit\Framework\MockObject\Exception;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
-use yii\web\{Application, HeaderCollection, Request};
+use yii\web\{Application, HeaderCollection, IdentityInterface, Request};
 use yii2\extensions\debug\tests\support\stub\MockerFunctions;
 
 use function dirname;
@@ -40,19 +40,6 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      * A secret key used for cookie validation in tests.
      */
     protected const COOKIE_VALIDATION_KEY = 'wefJDF8sfdsfSDefwqdxj9oq'; // gitleaks:allow (test-only, not a real secret)
-
-    /**
-     * Prepares the test environment before each test execution.
-     *
-     * Invokes the parent setup logic and resets the mocked microtime state to ensure consistent timing behavior across
-     * test runs.
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        MockerFunctions::clearMockedMicrotime();
-    }
 
     /**
      * Tears down the test environment after each test execution.
@@ -112,6 +99,19 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Prepares the test environment before each test execution.
+     *
+     * Invokes the parent setup logic and resets the mocked microtime state to ensure consistent timing behavior across
+     * test runs.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        MockerFunctions::clearMockedMicrotime();
+    }
+
+    /**
      * Builds and returns a new web {@see Application} instance for test scenarios.
      *
      * Merges the provided configuration with default test settings, including runtime and vendor paths, aliases, and a
@@ -127,30 +127,32 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      * @return Application Initialized web application instance for testing.
      *
      * @phpstan-param array<string, mixed> $config
+     * @phpstan-return Application<IdentityInterface>
      */
     protected function webApplication(array $config = []): Application
     {
-        return new Application(
-            ArrayHelper::merge(
-                [
-                    'id' => 'web-app',
-                    'basePath' => __DIR__,
-                    'runtimePath' => dirname(__DIR__) . '/runtime',
-                    'vendorPath' => dirname(__DIR__) . '/vendor',
-                    'aliases' => [
-                        '@bower' => '@vendor/bower-asset',
-                        '@npm' => '@vendor/npm-asset',
-                    ],
-                    'components' => [
-                        'request' => [
-                            'cookieValidationKey' => self::COOKIE_VALIDATION_KEY,
-                            'scriptFile' => __DIR__ . '/index.php',
-                            'scriptUrl' => '/index.php',
-                        ],
+        /** @phpstan-var array<string, mixed> $configApplication */
+        $configApplication = ArrayHelper::merge(
+            [
+                'id' => 'web-app',
+                'basePath' => __DIR__,
+                'runtimePath' => dirname(__DIR__) . '/runtime',
+                'vendorPath' => dirname(__DIR__) . '/vendor',
+                'aliases' => [
+                    '@bower' => '@vendor/bower-asset',
+                    '@npm' => '@vendor/npm-asset',
+                ],
+                'components' => [
+                    'request' => [
+                        'cookieValidationKey' => self::COOKIE_VALIDATION_KEY,
+                        'scriptFile' => __DIR__ . '/index.php',
+                        'scriptUrl' => '/index.php',
                     ],
                 ],
-                $config,
-            ),
+            ],
+            $config,
         );
+
+        return new Application($configApplication);
     }
 }

@@ -67,8 +67,8 @@ final class WorkerDebugModuleTest extends TestCase
         self::assertSame(
             dirname(__DIR__) . '/runtime/debug',
             $module->dataPath,
-            "'dataPath' should be equal to 'runtime/debug' under the project root to ensure debug data is stored in " .
-            'the expected path.',
+            "'dataPath' should be equal to 'runtime/debug' under the project root to ensure debug data is stored in "
+            . 'the expected path.',
         );
 
         $panels = self::invokeMethod($module, 'corePanels');
@@ -113,8 +113,8 @@ final class WorkerDebugModuleTest extends TestCase
                 ],
             ],
             $panels,
-            "'corePanels' should include the 'profiling' and 'timeline' panels with the correct classes, ensuring " .
-            'integration of custom and standard panels in the debug module.',
+            "'corePanels' should include the 'profiling' and 'timeline' panels with the correct classes, ensuring "
+            . 'integration of custom and standard panels in the debug module.',
         );
     }
 
@@ -361,14 +361,14 @@ final class WorkerDebugModuleTest extends TestCase
                         self::assertGreaterThan(
                             0,
                             (float) $value,
-                            "'X-Debug-Duration' header should be greater than '0' when 'statelessAppStartTime' is " .
-                            "available, got: {$value}.",
+                            "'X-Debug-Duration' header should be greater than '0' when 'statelessAppStartTime' is "
+                            . "available, got: {$value}.",
                         );
                         self::assertLessThan(
                             10000,
                             (float) $value,
-                            "'X-Debug-Duration' should be a reasonable duration in milliseconds, got: {$value}. " .
-                            'This suggests incorrect calculation (possibly addition instead of subtraction).',
+                            "'X-Debug-Duration' should be a reasonable duration in milliseconds, got: {$value}. "
+                            . 'This suggests incorrect calculation (possibly addition instead of subtraction).',
                         );
 
                         $durationCaptured = true;
