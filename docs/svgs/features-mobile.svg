@@ -1,0 +1,67 @@
+<!-- Versión móvil - Una sola columna -->
+<svg fill="none" viewBox="0 0 600 370" width="100%" height="560" xmlns="http://www.w3.org/2000/svg">
+    <foreignObject width="100%" height="100%">
+        <div xmlns="http://www.w3.org/1999/xhtml">
+            <style>
+                .container {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    gap: 16px;
+                    padding: 16px;
+                }
+                .alert-box {
+                    border-left: 4px solid #1f883d;
+                    padding: 12px;
+                    margin-bottom: 12px;
+                    border-radius: 6px;
+                    background: rgba(31, 136, 61, 0.1);
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+                    width: 100%;
+                    box-sizing: border-box;
+                }
+                .alert-title {
+                    margin: 0 0 8px 0;
+                    font-weight: 600;
+                    font-size: 14px;
+                }
+                .alert-content {
+                    margin: 0;
+                    line-height: 1.4;
+                    font-size: 12px;
+                }
+
+                /* Light mode */
+                @media (prefers-color-scheme: light) {
+                    .alert-title { color: #000000; }
+                    .alert-content { color: #333333; }
+                    .alert-box { background: rgba(31, 136, 61, 0.1); }
+                }
+
+                /* Dark mode */
+                @media (prefers-color-scheme: dark) {
+                    .alert-title { color: #ffffff; }
+                    .alert-content { color: #ffffff; }
+                    .alert-box { background: rgba(31, 136, 61, 0.2); }
+                }
+            </style>
+            <div class="container">
+                <div class="alert-box">
+                    <p class="alert-title"><strong>Comprehensive Request Inspection</strong></p>
+                    <p class="alert-content">Analyze HTTP requests, responses, headers, and routing</p>
+                </div>
+                <div class="alert-box">
+                    <p class="alert-title"><strong>Memory Management</strong></p>
+                    <p class="alert-content">Track memory consumption across worker requests</p>
+                </div>
+                <div class="alert-box">
+                    <p class="alert-title"><strong>Real-Time Performance Monitoring</strong></p>
+                    <p class="alert-content">Track execution time, memory usage, and request metricsts</p>
+                </div>
+                <div class="alert-box">
+                    <p class="alert-title"><strong>Worker-Aware Debug Toolbar</strong></p>
+                    <p class="alert-content">Specialized debugging interface designed for persistent PHP worker processes</p>
+                </div>
+            </div>
+        </div>
+    </foreignObject>
+</svg>

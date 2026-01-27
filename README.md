@@ -1,77 +1,54 @@
+<!-- markdownlint-disable MD041 -->
 <p align="center">
-    <a href="https://github.com/yii2-extensions/worker-debug" target="_blank">
-        <img src="https://www.yiiframework.com/image/yii_logo_light.svg" alt="Yii Framework">
-    </a>
-    <h1 align="center">Debug toolbar for the Yii2 PSR Bridge extension.</h1>
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://www.yiiframework.com/image/design/logo/yii3_full_for_dark.svg">
+        <source media="(prefers-color-scheme: light)" srcset="https://www.yiiframework.com/image/design/logo/yii3_full_for_light.svg">
+        <img src="https://www.yiiframework.com/image/design/logo/yii3_full_for_dark.svg" alt="Yii Framework" width="80%">
+    </picture>
+    <h1 align="center">Worker Debug</h1>
     <br>
 </p>
+<!-- markdownlint-enable MD041 -->
 
 <p align="center">
-    <a href="https://www.php.net/releases/8.1/en.php" target="_blank">
-        <img src="https://img.shields.io/badge/%3E%3D8.1-777BB4.svg?style=for-the-badge&logo=php&logoColor=white" alt="PHP version">
-    </a>
-    <a href="https://github.com/yiisoft/yii2/tree/2.0.53" target="_blank">
-        <img src="https://img.shields.io/badge/2.0.x-0073AA.svg?style=for-the-badge&logo=yii&logoColor=white" alt="Yii 2.0.x">
-    </a>
-    <a href="https://github.com/yiisoft/yii2/tree/22.0" target="_blank">
-        <img src="https://img.shields.io/badge/22.0.x-0073AA.svg?style=for-the-badge&logo=yii&logoColor=white" alt="Yii 22.0.x">
-    </a>
     <a href="https://github.com/yii2-extensions/worker-debug/actions/workflows/build.yml" target="_blank">
-        <img src="https://img.shields.io/github/actions/workflow/status/yii2-extensions/worker-debug/build.yml?style=for-the-badge&label=PHPUnit" alt="PHPUnit">
-    </a> 
+        <img src="https://img.shields.io/github/actions/workflow/status/yii2-extensions/worker-debug/build.yml?style=for-the-badge&logo=github&label=PHPUnit" alt="PHPUnit">
+    </a>
     <a href="https://dashboard.stryker-mutator.io/reports/github.com/yii2-extensions/worker-debug/main" target="_blank">
         <img src="https://img.shields.io/endpoint?style=for-the-badge&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fyii2-extensions%2Fworker-debug%2Fmain" alt="Mutation Testing">
-    </a>    
-    <a href="https://github.com/yii2-extensions/worker-debug/actions/workflows/static.yml" target="_blank">        
-        <img src="https://img.shields.io/github/actions/workflow/status/yii2-extensions/worker-debug/static.yml?style=for-the-badge&label=PHPStan" alt="PHPStan">
-    </a>  
+    </a>
+    <a href="https://github.com/yii2-extensions/worker-debug/actions/workflows/static.yml" target="_blank">
+        <img src="https://img.shields.io/github/actions/workflow/status/yii2-extensions/worker-debug/static.yml?style=for-the-badge&logo=github&label=PHPStan" alt="PHPStan">
+    </a>
 </p>
 
-A specialized debug toolbar extension that provides enhanced debugging capabilities for Yii2 applications using the PSR 
-Bridge, offering comprehensive insights into application execution, performance metrics, and component interactions.
+<p align="center">
+    <strong>Enhanced debugging capabilities for Yii2 applications with FrankenPHP worker mode</strong><br>
+    <em>Real-time performance monitoring, comprehensive request inspection, and worker-aware debugging</em>
+</p>
 
 ## Features
 
-✅ **Enhanced Debug Toolbar**
-- Real-time performance monitoring and metrics collection.
+<picture>
+    <source media="(min-width: 768px)" srcset="./docs/svgs/features.svg">
+    <img src="./docs/svgs/features-mobile.svg" alt="Feature Overview" style="width: 100%;">
+</picture>
 
-### System requirements
+## Demo
 
-- [`PHP`](https://www.php.net/downloads) 8.1 or higher.
-- [`Composer`](https://getcomposer.org/download/) for dependency management.
-- [`Yii2`](https://github.com/yiisoft/yii2) 2.0.53+ or 22.x.
+[![Template](https://img.shields.io/badge/Template-App%20Basic-74AA9C?style=for-the-badge&logo=yii&logoColor=white)](https://github.com/yii2-extensions/app-basic/tree/franken-php)
 
-### Installation
+Explore the ready-to-run Yii2 + FrankenPHP application template with Worker Debug pre-configured.
 
-#### Method 1: Using [Composer](https://getcomposer.org/download/) (recommended)
-
-Install the extension.
+## Installation
 
 ```bash
-composer require yii2-extensions/worker-debug:^0.1
+composer require --dev yii2-extensions/worker-debug:^0.1
 ```
 
-#### Method 2: Manual installation
+## Quick start
 
-Add to your `composer.json`.
-
-```json
-{
-    "require": {
-        "yii2-extensions/worker-debug": "^0.1"
-    }
-}
-```
-
-Then run.
-
-```bash
-composer update
-```
-
-### Quick start
-
-Add the following code to your configuration file (`web.php`).
+Add the following to your development configuration (`config/web.php`)
 
 ```php
 <?php
@@ -91,22 +68,39 @@ if (YII_ENV_DEV) {
 }
 ```
 
+> [!IMPORTANT]
+> The Worker Debug extension is specifically designed for development environments.  
+> Never enable it in production as it may expose sensitive application data.
+
+## Why Worker Debug?
+
+Traditional Yii2 debug toolbar relies on PHP's global state and request lifecycle that doesn't align with FrankenPHP's
+persistent worker mode. The Worker Debug extension addresses this by:
+
+- **Accurate Timing** – Correctly tracks request duration in worker environments
+- **State Isolation** – Ensures debug data doesn't leak between requests
+- **Performance Optimization** – Minimal overhead on worker processes
+- **Enhanced Visibility** – Better insights into worker-specific behavior
+
 ## Documentation
 
-For testing guidance, see.
+For detailed configuration options and advanced usage.
 
 - 🧪 [Testing Guide](docs/testing.md)
 - 🛠️ [Development Guide](docs/development.md)
 
 ## Package information
 
+[![PHP](https://img.shields.io/badge/%3E%3D8.1-777BB4.svg?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/releases/8.1/en.php)
+[![Yii 2.0.x](https://img.shields.io/badge/2.0.53-0073AA.svg?style=for-the-badge&logo=yii&logoColor=white)](https://github.com/yiisoft/yii2/tree/2.0.53)
+[![Yii 22.0.x](https://img.shields.io/badge/22.0.x-0073AA.svg?style=for-the-badge&logo=yii&logoColor=white)](https://github.com/yiisoft/yii2/tree/22.0)
 [![Latest Stable Version](https://img.shields.io/packagist/v/yii2-extensions/worker-debug.svg?style=for-the-badge&logo=packagist&logoColor=white&label=Stable)](https://packagist.org/packages/yii2-extensions/worker-debug)
-[![Total Downloads](https://img.shields.io/packagist/dt/yii2-extensions/worker-debug.svg?style=for-the-badge&logo=packagist&logoColor=white&label=Downloads)](https://packagist.org/packages/yii2-extensions/worker-debug)
+[![Total Downloads](https://img.shields.io/packagist/dt/yii2-extensions/worker-debug.svg?style=for-the-badge&logo=composer&logoColor=white&label=Downloads)](https://packagist.org/packages/yii2-extensions/worker-debug)
 
 ## Quality code
 
-[![codecov](https://img.shields.io/codecov/c/github/yii2-extensions/worker-debug.svg?style=for-the-badge&logo=codecov&logoColor=white&label=Coverage)](https://codecov.io/gh/yii2-extensions/worker-debug)
-[![phpstan-level](https://img.shields.io/badge/PHPStan%20level-max-blue?style=for-the-badge)](https://github.com/yii2-extensions/worker-debug/actions/workflows/static.yml)
+[![Codecov](https://img.shields.io/codecov/c/github/yii2-extensions/worker-debug.svg?style=for-the-badge&logo=codecov&logoColor=white&label=Coverage)](https://codecov.io/gh/yii2-extensions/worker-debug)
+[![PHPStan Level Max](https://img.shields.io/badge/PHPStan-Level%20Max-4F5D95.svg?style=for-the-badge&logo=php&logoColor=white)](https://github.com/yii2-extensions/worker-debug/actions/workflows/static.yml)
 [![StyleCI](https://img.shields.io/badge/StyleCI-Passed-44CC11.svg?style=for-the-badge&logo=styleci&logoColor=white)](https://github.styleci.io/repos/1038618413?branch=main)
 
 ## Our social networks
@@ -115,4 +109,4 @@ For testing guidance, see.
 
 ## License
 
-[![License](https://img.shields.io/github/license/yii2-extensions/worker-debug?style=for-the-badge&logo=opensourceinitiative&logoColor=white&labelColor=333333)](LICENSE.md)
+[![License](https://img.shields.io/badge/License-BSD--3--Clause-brightgreen.svg?style=for-the-badge&logo=opensourceinitiative&logoColor=white&labelColor=555555)](LICENSE.md)
