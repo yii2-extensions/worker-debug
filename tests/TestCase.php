@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace yii2\extensions\debug\tests;
 
-use PHPForge\Support\TestSupport;
 use PHPUnit\Framework\MockObject\Exception;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -34,8 +33,6 @@ use function dirname;
  */
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
-    use TestSupport;
-
     /**
      * A secret key used for cookie validation in tests.
      */
