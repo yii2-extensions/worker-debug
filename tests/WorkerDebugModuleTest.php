@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace yii2\extensions\debug\tests;
 
+use PHPForge\Support\ReflectionHelper;
 use PHPUnit\Framework\Attributes\Group;
 use stdClass;
 use yii\base\{Event, InvalidConfigException};
@@ -71,7 +72,7 @@ final class WorkerDebugModuleTest extends TestCase
             . 'the expected path.',
         );
 
-        $panels = self::invokeMethod($module, 'corePanels');
+        $panels = ReflectionHelper::invokeMethod($module, 'corePanels');
 
         self::assertSame(
             [
