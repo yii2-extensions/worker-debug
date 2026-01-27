@@ -9,7 +9,7 @@ use PHPUnit\Framework\MockObject\Exception;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
-use yii\web\{Application, HeaderCollection, Request};
+use yii\web\{Application, HeaderCollection, IdentityInterface, Request};
 use yii2\extensions\debug\tests\support\stub\MockerFunctions;
 
 use function dirname;
@@ -127,30 +127,32 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      * @return Application Initialized web application instance for testing.
      *
      * @phpstan-param array<string, mixed> $config
+     * @phpstan-return Application<IdentityInterface>
      */
     protected function webApplication(array $config = []): Application
     {
-        return new Application(
-            ArrayHelper::merge(
-                [
-                    'id' => 'web-app',
-                    'basePath' => __DIR__,
-                    'runtimePath' => dirname(__DIR__) . '/runtime',
-                    'vendorPath' => dirname(__DIR__) . '/vendor',
-                    'aliases' => [
-                        '@bower' => '@vendor/bower-asset',
-                        '@npm' => '@vendor/npm-asset',
-                    ],
-                    'components' => [
-                        'request' => [
-                            'cookieValidationKey' => self::COOKIE_VALIDATION_KEY,
-                            'scriptFile' => __DIR__ . '/index.php',
-                            'scriptUrl' => '/index.php',
-                        ],
+        /** @phpstan-var array<string, mixed> $configApplication */
+        $configApplication = ArrayHelper::merge(
+            [
+                'id' => 'web-app',
+                'basePath' => __DIR__,
+                'runtimePath' => dirname(__DIR__) . '/runtime',
+                'vendorPath' => dirname(__DIR__) . '/vendor',
+                'aliases' => [
+                    '@bower' => '@vendor/bower-asset',
+                    '@npm' => '@vendor/npm-asset',
+                ],
+                'components' => [
+                    'request' => [
+                        'cookieValidationKey' => self::COOKIE_VALIDATION_KEY,
+                        'scriptFile' => __DIR__ . '/index.php',
+                        'scriptUrl' => '/index.php',
                     ],
                 ],
-                $config,
-            ),
+            ],
+            $config,
         );
+
+        return new Application($configApplication);
     }
 }
