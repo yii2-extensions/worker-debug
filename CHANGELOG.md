@@ -1,4 +1,4 @@
-# Change Log
+# ChangeLog
 
 ## 0.1.2 Under development
 
@@ -7,6 +7,7 @@
 - Dep #16: Bump `php-forge/actions` from `1` to `2` (@dependabot)
 - Dep #17: Update `symplify/easy-coding-standard` requirement from `^12.5` to `^13.0` (@dependabot)
 - Enh #20: Add `php-forge/coding-standard` to development dependencies for code quality checks (@terabytesoftw)
+- Bug #21: Remove outdated GitHub templates and code of conduct files; add linter configuration and feature SVGs (@terabytesoftw)
 
 ## 0.1.1 August 17, 2025
 

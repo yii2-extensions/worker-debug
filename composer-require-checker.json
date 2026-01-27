@@ -1,5 +1,3 @@
 {
-    "symbol-whitelist": [
-        "YII_BEGIN_TIME"
-    ]
+    "symbol-whitelist": ["YII_BEGIN_TIME"]
 }
