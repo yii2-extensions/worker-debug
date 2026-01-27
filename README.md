@@ -96,6 +96,7 @@ if (YII_ENV_DEV) {
 For testing guidance, see.
 
 - 🧪 [Testing Guide](docs/testing.md)
+- 🛠️ [Development Guide](docs/development.md)
 
 ## Package information
 

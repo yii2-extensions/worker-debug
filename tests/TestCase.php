@@ -42,19 +42,6 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     protected const COOKIE_VALIDATION_KEY = 'wefJDF8sfdsfSDefwqdxj9oq'; // gitleaks:allow (test-only, not a real secret)
 
     /**
-     * Prepares the test environment before each test execution.
-     *
-     * Invokes the parent setup logic and resets the mocked microtime state to ensure consistent timing behavior across
-     * test runs.
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        MockerFunctions::clearMockedMicrotime();
-    }
-
-    /**
      * Tears down the test environment after each test execution.
      *
      * Closes the application and flushes the logger to ensure a clean state for subsequent tests.
@@ -109,6 +96,19 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         }
 
         Yii::getLogger()->flush();
+    }
+
+    /**
+     * Prepares the test environment before each test execution.
+     *
+     * Invokes the parent setup logic and resets the mocked microtime state to ensure consistent timing behavior across
+     * test runs.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        MockerFunctions::clearMockedMicrotime();
     }
 
     /**
