@@ -2,6 +2,8 @@
 
 ## 0.1.3 Under development
 
+- Bug #23: Add `Super-Linter` badge to `README.md` for improved visibility on code quality checks (@terabytesoftw)
+
 ## 0.1.2 January 27, 2026
 
 - Bug #14: Update badge styles and links in `README.md` for improved visibility and accuracy (@terabytesoftw)
