@@ -9,7 +9,6 @@ use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\web\{Application, HeaderCollection, IdentityInterface, Request};
-use yii2\extensions\debug\tests\support\stub\MockerFunctions;
 
 use function dirname;
 
@@ -98,14 +97,11 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     /**
      * Prepares the test environment before each test execution.
      *
-     * Invokes the parent setup logic and resets the mocked microtime state to ensure consistent timing behavior across
-     * test runs.
+     * Invokes the parent setup logic to ensure consistent test initialization.
      */
     protected function setUp(): void
     {
         parent::setUp();
-
-        MockerFunctions::clearMockedMicrotime();
     }
 
     /**

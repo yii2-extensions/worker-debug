@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace yii2\extensions\debug\tests\support;
 
+use PHPUnit\Event\Test\{Finished, FinishedSubscriber};
 use PHPUnit\Event\Test\{PreparationStarted, PreparationStartedSubscriber};
 use PHPUnit\Event\TestSuite\{Started, StartedSubscriber};
 use PHPUnit\Runner\Extension\{Extension, Facade, ParameterCollection};
 use PHPUnit\TextUI\Configuration\Configuration;
 use Xepozz\InternalMocker\{Mocker, MockerState};
-use yii2\extensions\debug\tests\support\stub\MockerFunctions;
 
 /**
  * PHPUnit extension for function mocking and state isolation in tests.
@@ -18,14 +18,15 @@ use yii2\extensions\debug\tests\support\stub\MockerFunctions;
  * {@see \microtime()}) within the test suite, ensuring test isolation and repeatability.
  *
  * This extension registers event subscribers to automatically load mocks at the start of each test suite and reset
- * mock state before each test, providing a controlled environment for time-dependent and side-effect-prone logic.
+ * mock state before and after each test, providing a controlled environment for time-dependent and side-effect-prone
+ * logic.
  *
  * Key features.
  * - Automatic registration of function mocks for the test namespace.
  * - Integration with InternalMocker for global function overrides.
  * - Mocked implementation of {@see \microtime()} for time control in tests.
  * - No side effects on the global state outside the test context.
- * - State reset before each test for isolation and repeatability.
+ * - State reset before and after each test for isolation and repeatability.
  *
  * @copyright Copyright (C) 2025 Terabytesoftw.
  * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
@@ -47,6 +48,12 @@ final class MockerExtension implements Extension
                     MockerState::resetState();
                 }
             },
+            new class implements FinishedSubscriber {
+                public function notify(Finished $event): void
+                {
+                    MockerState::resetState();
+                }
+            },
         );
     }
 
@@ -56,12 +63,13 @@ final class MockerExtension implements Extension
             [
                 'namespace' => 'yii2\extensions\debug',
                 'name' => 'microtime',
-                'function' => static fn(bool $as_float = false): float|string => MockerFunctions::microtime($as_float),
             ],
         ];
 
-        $mocker = new Mocker();
+        $mocksPath = __DIR__ . '/../../.phpunit.cache/internal-mocker/mocks.php';
+        $stubPath = __DIR__ . '/internal-mocker-stubs.php';
 
+        $mocker = new Mocker($mocksPath, $stubPath);
         $mocker->load($mocks);
 
         MockerState::saveState();

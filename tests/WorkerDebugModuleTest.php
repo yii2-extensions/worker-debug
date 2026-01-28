@@ -7,6 +7,7 @@ namespace yii2\extensions\debug\tests;
 use PHPForge\Support\ReflectionHelper;
 use PHPUnit\Framework\Attributes\Group;
 use stdClass;
+use Xepozz\InternalMocker\MockerState;
 use yii\base\{Event, InvalidConfigException};
 use yii\debug\LogTarget;
 use yii\debug\panels\{
@@ -22,7 +23,6 @@ use yii\debug\panels\{
     UserPanel,
 };
 use yii\web\{HeaderCollection, Response};
-use yii2\extensions\debug\tests\support\stub\MockerFunctions;
 use yii2\extensions\debug\{WorkerDebugModule, WorkerProfilingPanel, WorkerTimelinePanel};
 
 use function dirname;
@@ -127,7 +127,7 @@ final class WorkerDebugModuleTest extends TestCase
         $startTime = '1234567890.500';
         $currentTime = 1234567893.1234;
 
-        MockerFunctions::setMockedMicrotime($currentTime);
+        MockerState::addCondition('yii2\extensions\debug', 'microtime', [true], $currentTime);
 
         $headers = $this->createPartialMock(HeaderCollection::class, ['get', 'set']);
 
