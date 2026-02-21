@@ -4,7 +4,8 @@
 
 - Bug #23: Add `Super-Linter` badge to `README.md` for improved visibility on code quality checks (@terabytesoftw)
 - Bug #24: Replace `MockerFunctions` with `MockerState` class for `microtime()` handling and improve test isolation (@terabytesoftw)
-- Bug #25: Standardize PHPUnit PHPDoc headers across `src` and `tests`, replace `statelessAppStartTime` header with `REQUEST_TIME_FLOAT` (with `YII_BEGIN_TIME` fallback) for timing measurements (@terabytesoftw)
+- Bug #25: Standardize PHPUnit PHPDoc headers across `src` and `tests`, replace `statelessAppStartTime` with `REQUEST_TIME_FLOAT` (with `YII_BEGIN_TIME` fallback) for timing measurements (@terabytesoftw)
+- Bug #26: Read `REQUEST_TIME_FLOAT` from request server params instead of headers across worker debug panels and module (@terabytesoftw)
 
 ## 0.1.2 January 27, 2026
 

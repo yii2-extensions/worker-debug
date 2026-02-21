@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace yii2\extensions\debug;
 
-use Yii;
 use yii\base\{Event, InvalidConfigException};
 use yii\debug\Module;
 use yii\helpers\Url;
@@ -16,7 +15,7 @@ use function is_array;
 use function is_string;
 
 /**
- * Extends Yii debug module integration for worker profiling and timeline panels.
+ * Integrates Yii debug module panels for worker mode and emits debug headers with worker-safe timing.
  *
  * @copyright Copyright (C) 2025 Terabytesoftw.
  * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
@@ -36,7 +35,9 @@ class WorkerDebugModule extends Module
     }
 
     /**
-     * Sets debug headers for the current response when access is allowed.
+     * Sets debug headers when access is allowed and the sender is a response.
+     *
+     * Reads request start time from $_SERVER['REQUEST_TIME_FLOAT'] and falls back to YII_BEGIN_TIME.
      *
      * @param Event $event Event object containing the response sender.
      */
@@ -57,7 +58,7 @@ class WorkerDebugModule extends Module
                     'tag' => $this->logTarget->tag,
                 ],
             );
-            $requestTimeFloat = Yii::$app->request->getHeaders()->get('REQUEST_TIME_FLOAT') ?? YII_BEGIN_TIME;
+            $requestTimeFloat = $_SERVER['REQUEST_TIME_FLOAT'] ?? YII_BEGIN_TIME;
             $durationMs = ceil((microtime(true) - (float) $requestTimeFloat) * 1000);
 
             $event->sender->getHeaders()

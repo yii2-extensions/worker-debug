@@ -123,10 +123,7 @@ final class WorkerDebugModuleTest extends TestCase
 
         MockerState::addCondition('yii2\extensions\debug', 'microtime', [true], $currentTime);
 
-        $headers = $this->createPartialMock(HeaderCollection::class, ['get', 'set']);
-
-        $headers->method('get')->with('REQUEST_TIME_FLOAT')->willReturn($startTime);
-
+        $headers = $this->createPartialMock(HeaderCollection::class, ['set']);
         $response = $this->createPartialMock(Response::class, ['getHeaders']);
 
         $response->method('getHeaders')->willReturn($headers);
@@ -388,7 +385,7 @@ final class WorkerDebugModuleTest extends TestCase
     /**
      * @throws InvalidConfigException if the configuration is invalid or incomplete.
      */
-    public function testSetDebugHeadersUsesYiiBeginTimeWhenRequestTimeFloatHeaderIsMissing(): void
+    public function testSetDebugHeadersUsesYiiBeginTimeWhenRequestTimeFloatServerParamIsMissing(): void
     {
         $headers = $this->createMock(HeaderCollection::class);
 

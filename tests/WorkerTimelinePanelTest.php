@@ -48,7 +48,7 @@ final class WorkerTimelinePanelTest extends TestCase
             (float) $customStartTime,
             $result['start'],
             0.005,
-            "'start' should match header-provided start time within 5ms tolerance.",
+            "'start' should match server-param-provided start time within 5ms tolerance.",
         );
         self::assertIsFloat(
             $result['end'] ?? null,
