@@ -451,7 +451,7 @@ final class WorkerDebugModuleTest extends TestCase
                             );
                             self::assertGreaterThan(
                                 0,
-                            (float) $value,
+                                (float) $value,
                                 "'X-Debug-Duration' should be positive when falling back to 'YII_BEGIN_TIME', "
                                 . "got: {$value}.",
                             );
