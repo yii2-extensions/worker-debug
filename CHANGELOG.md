@@ -1,6 +1,6 @@
 # ChangeLog
 
-## 0.1.3 Under development
+## 0.1.3 February 21, 2026
 
 - Bug #23: Add `Super-Linter` badge to `README.md` for improved visibility on code quality checks (@terabytesoftw)
 - Bug #24: Replace `MockerFunctions` with `MockerState` class for `microtime()` handling and improve test isolation (@terabytesoftw)
