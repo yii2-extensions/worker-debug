@@ -36,7 +36,7 @@ use function dirname;
  * - Keeps response headers unchanged when log target is an array or string.
  * - Registers default module values and core panel classes.
  * - Skips header injection when sender is not a response.
- * - Uses `REQUEST_TIME_FLOAT` when available and `YII_BEGIN_TIME` when it is missing.
+ * - Uses REQUEST_TIME_FLOAT when available and YII_BEGIN_TIME when it is missing.
  *
  * @copyright Copyright (C) 2025 Terabytesoftw.
  * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
@@ -118,7 +118,7 @@ final class WorkerDebugModuleTest extends TestCase
      */
     public function testSetDebugHeadersCalculatesCorrectDurationInMilliseconds(): void
     {
-        $startTime = '1234567890.500';
+        $startTime = 1234567890.500;
         $currentTime = 1234567893.1234;
 
         MockerState::addCondition('yii2\extensions\debug', 'microtime', [true], $currentTime);
@@ -309,7 +309,7 @@ final class WorkerDebugModuleTest extends TestCase
      */
     public function testSetDebugHeadersUsesRequestTimeFloatWhenAvailable(): void
     {
-        $customStartTime = (string) (microtime(true) - 1);
+        $customStartTime = microtime(true) - 1;
 
         $headers = $this->createMock(HeaderCollection::class);
 

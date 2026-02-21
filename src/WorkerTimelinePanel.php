@@ -30,7 +30,7 @@ class WorkerTimelinePanel extends TimelinePanel
         $requestTimeFloat = $_SERVER['REQUEST_TIME_FLOAT'] ?? YII_BEGIN_TIME;
 
         return [
-            'start' => (float) $requestTimeFloat,
+            'start' => $requestTimeFloat,
             'end' => microtime(true),
             'memory' => memory_get_peak_usage(),
         ];

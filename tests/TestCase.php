@@ -56,17 +56,16 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Creates a partial {@see Request} instance with the 'REQUEST_TIME_FLOAT' server param mocked.
+     * Creates a {@see Request} instance with the $_SERVER['REQUEST_TIME_FLOAT'] server param set or unset.
      *
-     * Builds a web request object with the 'REQUEST_TIME_FLOAT' server param set to the provided value, enabling
-     * tests for
+     * Builds a web request object with the REQUEST_TIME_FLOAT server param set to the provided value, or unset when
      * stateless application scenarios and start time measurement.
      *
-     * @param string|null $value Value to return for the 'REQUEST_TIME_FLOAT' server param.
+     * @param float|null $value Value to return for the REQUEST_TIME_FLOAT server param.
      *
      * @return Request Request instance with prepared server params.
      */
-    protected function buildRequestWithStatelessStart(string|null $value): Request
+    protected function buildRequestWithStatelessStart(float|null $value): Request
     {
         $this->hasOriginalRequestTimeFloat = array_key_exists('REQUEST_TIME_FLOAT', $_SERVER);
         $this->originalRequestTimeFloat = $_SERVER['REQUEST_TIME_FLOAT'] ?? null;

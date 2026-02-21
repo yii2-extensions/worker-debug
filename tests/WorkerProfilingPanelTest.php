@@ -30,7 +30,7 @@ final class WorkerProfilingPanelTest extends TestCase
      */
     public function testSaveReturnsCorrectDataStructureWithCustomStartTime(): void
     {
-        $customStartTime = (string) (microtime(true) - 2);
+        $customStartTime = microtime(true) - 2;
 
         $this->webApplication(
             [

@@ -26,7 +26,7 @@ final class WorkerTimelinePanelTest extends TestCase
      */
     public function testSaveReturnsCorrectDataStructureWithCustomStartTime(): void
     {
-        $customStartTime = (string) (microtime(true) - 2);
+        $customStartTime = microtime(true) - 2;
 
         $this->webApplication(
             [
@@ -45,7 +45,7 @@ final class WorkerTimelinePanelTest extends TestCase
             "'start' value should be a float representing the request start time.",
         );
         self::assertEqualsWithDelta(
-            (float) $customStartTime,
+            $customStartTime,
             $result['start'],
             0.005,
             "'start' should match server-param-provided start time within 5ms tolerance.",
@@ -56,7 +56,7 @@ final class WorkerTimelinePanelTest extends TestCase
         );
         self::assertGreaterThanOrEqual(
             2.0,
-            $result['end'] - (float) $customStartTime,
+            $result['end'] - $customStartTime,
             "'end' value should be approximately '2.0' seconds greater than the custom start time.",
         );
         self::assertGreaterThanOrEqual(

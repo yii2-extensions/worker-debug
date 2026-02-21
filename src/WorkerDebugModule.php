@@ -58,8 +58,9 @@ class WorkerDebugModule extends Module
                     'tag' => $this->logTarget->tag,
                 ],
             );
+            /** @phpstan-var float $requestTimeFloat */
             $requestTimeFloat = $_SERVER['REQUEST_TIME_FLOAT'] ?? YII_BEGIN_TIME;
-            $durationMs = ceil((microtime(true) - (float) $requestTimeFloat) * 1000);
+            $durationMs = ceil((microtime(true) - $requestTimeFloat) * 1000);
 
             $event->sender->getHeaders()
                 ->set('X-Debug-Tag', $this->logTarget->tag)

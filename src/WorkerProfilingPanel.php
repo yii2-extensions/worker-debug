@@ -28,11 +28,12 @@ class WorkerProfilingPanel extends ProfilingPanel
      */
     public function save(): array
     {
+        /** @phpstan-var float $requestTimeFloat */
         $requestTimeFloat = $_SERVER['REQUEST_TIME_FLOAT'] ?? YII_BEGIN_TIME;
 
         return [
             'memory' => memory_get_peak_usage(),
-            'time' => microtime(true) - (float) $requestTimeFloat,
+            'time' => microtime(true) - $requestTimeFloat,
             'messages' => $this->getLogMessages(Logger::LEVEL_PROFILE),
         ];
     }
