@@ -12,19 +12,12 @@ use yii2\extensions\debug\WorkerProfilingPanel;
 use function memory_get_peak_usage;
 
 /**
- * Test suite for {@see WorkerProfilingPanel} class functionality and behavior.
- *
- * Verifies the profiling panel ability to capture and report execution time, memory usage, and profiling messages under
- * different application start time scenarios.
- *
- * These tests ensure the panel correctly calculates execution duration using custom and default start times, returns
- * the expected data structure, and accurately reports peak memory usage.
+ * Unit tests for the {@see WorkerProfilingPanel} class.
  *
  * Test coverage.
- * - Custom start time handling for execution duration calculation.
- * - Default start time fallback and data structure validation.
- * - Memory usage reporting using {@see memory_get_peak_usage()}.
- * - Profiling message retrieval and structure.
+ * - Reports peak memory usage values from profiling data.
+ * - Returns profiling data with custom request start time.
+ * - Returns profiling data with default request start time.
  *
  * @copyright Copyright (C) 2025 Terabytesoftw.
  * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.

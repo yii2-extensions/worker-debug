@@ -13,19 +13,10 @@ use yii\web\{Application, HeaderCollection, IdentityInterface, Request};
 use function dirname;
 
 /**
- * Base test case for worker debug module test suites.
+ * Base class for package integration tests.
  *
- * Provides common setup and teardown logic for all worker debug module tests, including application lifecycle
+ * Provides common setup and teardown logic for all package integration tests, including application lifecycle
  * management and request mocking utilities.
- *
- * This class centralizes logic for initializing the test environment, managing application state, and providing helpers
- * for request and session handling, ensuring consistency and reducing duplication across test cases.
- *
- * Key features.
- * - Application bootstrap and teardown for isolated test execution.
- * - Session and logger cleanup to prevent test contamination.
- * - Stateless request header mocking for profiling scenarios.
- * - Utility for building web application instances with custom configuration.
  *
  * @copyright Copyright (C) 2025 Terabytesoftw.
  * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
@@ -50,12 +41,12 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Creates a partial {@see Request} instance with the 'statelessAppStartTime' header mocked.
+     * Creates a partial {@see Request} instance with the 'REQUEST_TIME_FLOAT' header mocked.
      *
-     * Builds a web request object with the 'statelessAppStartTime' header set to the provided value, enabling tests for
+     * Builds a web request object with the 'REQUEST_TIME_FLOAT' header set to the provided value, enabling tests for
      * stateless application scenarios and start time measurement.
      *
-     * @param string|null $value Value to return for the 'statelessAppStartTime' header.
+     * @param string|null $value Value to return for the 'REQUEST_TIME_FLOAT' header.
      *
      * @throws Exception If the mock object creation fails.
      *
@@ -65,7 +56,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     {
         $headers = $this->createPartialMock(HeaderCollection::class, ['get']);
 
-        $headers->method('get')->with('statelessAppStartTime')->willReturn($value);
+        $headers->method('get')->with('REQUEST_TIME_FLOAT')->willReturn($value);
 
         $request = $this->createPartialMock(Request::class, ['getHeaders']);
 

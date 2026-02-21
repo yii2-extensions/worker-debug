@@ -16,19 +16,7 @@ use function is_array;
 use function is_string;
 
 /**
- * Debug module extension for worker profiling and timeline panels integration.
- *
- * Extends the Yii debug module to provide additional profiling and timeline panels for enhanced debugging and
- * performance analysis.
- *
- * This module customizes the debug view path and sets custom HTTP headers for debug sessions, including tag and
- * duration information.
- *
- * Key features.
- * - Customizes the debug view path for compatibility with Yii debug views.
- * - Ensures access control for debug header injection.
- * - Integrates worker profiling and timeline panels into the debug interface.
- * - Sets custom debug headers with tag, duration, and debug link for each response.
+ * Extends Yii debug module integration for worker profiling and timeline panels.
  *
  * @copyright Copyright (C) 2025 Terabytesoftw.
  * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
@@ -36,12 +24,7 @@ use function is_string;
 class WorkerDebugModule extends Module
 {
     /**
-     * Initializes the worker debug module and sets the custom view path.
-     *
-     * Sets the {@see viewPath} property to use the Yii debug views directory before invoking the parent initialization
-     * logic.
-     *
-     * This ensures compatibility with the Yii debug module view templates.
+     * Initializes the module and sets the Yii debug view path.
      *
      * @throws InvalidConfigException if the configuration is invalid or incomplete.
      */
@@ -53,17 +36,7 @@ class WorkerDebugModule extends Module
     }
 
     /**
-     * Sets custom debug headers on the HTTP response for the current debug session.
-     *
-     * Injects the 'X-Debug-Tag', 'X-Debug-Duration', and 'X-Debug-Link' headers into the response if access is allowed
-     * and the log target is a valid object.
-     *
-     * The duration is calculated from the application start time header or the 'YII_BEGIN_TIME' constant.
-     *
-     * The debug link points to the debug view for the current tag.
-     *
-     * This method ensures that debug headers are only set for authorized requests and when the log target is not a
-     * string or array, maintaining compatibility with the debug module expected behavior.
+     * Sets debug headers for the current response when access is allowed.
      *
      * @param Event $event Event object containing the response sender.
      */
@@ -84,8 +57,8 @@ class WorkerDebugModule extends Module
                     'tag' => $this->logTarget->tag,
                 ],
             );
-            $statelessAppStartTime = Yii::$app->request->getHeaders()->get('statelessAppStartTime') ?? YII_BEGIN_TIME;
-            $durationMs = ceil((microtime(true) - (float) $statelessAppStartTime) * 1000);
+            $requestTimeFloat = Yii::$app->request->getHeaders()->get('REQUEST_TIME_FLOAT') ?? YII_BEGIN_TIME;
+            $durationMs = ceil((microtime(true) - (float) $requestTimeFloat) * 1000);
 
             $event->sender->getHeaders()
                 ->set('X-Debug-Tag', $this->logTarget->tag)
@@ -95,14 +68,9 @@ class WorkerDebugModule extends Module
     }
 
     /**
-     * Returns the core panels configuration with worker profiling and timeline integration.
+     * Returns core panel configuration with worker profiling and timeline panels.
      *
-     * Extends the parent core panels array by adding the worker profiling and timeline panels to the debug module.
-     *
-     * This method ensures that the profiling and timeline panels are available in the debug interface for enhanced
-     * performance analysis and profiling capabilities.
-     *
-     * @return array Merges the parent core panels with worker profiling and timeline panels.
+     * @return array Merged core panel configuration.
      *
      * @phpstan-return array<array-key, mixed>
      */

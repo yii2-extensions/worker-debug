@@ -12,27 +12,16 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use Xepozz\InternalMocker\{Mocker, MockerState};
 
 /**
- * PHPUnit extension for function mocking and state isolation in tests.
- *
- * Integrates the InternalMocker library with PHPUnit to enable deterministic mocking of global functions (such as
- * {@see \microtime()}) within the test suite, ensuring test isolation and repeatability.
- *
- * This extension registers event subscribers to automatically load mocks at the start of each test suite and reset
- * mock state before and after each test, providing a controlled environment for time-dependent and side-effect-prone
- * logic.
- *
- * Key features.
- * - Automatic registration of function mocks for the test namespace.
- * - Integration with InternalMocker for global function overrides.
- * - Mocked implementation of {@see \microtime()} for time control in tests.
- * - No side effects on the global state outside the test context.
- * - State reset before and after each test for isolation and repeatability.
+ * PHPUnit extension that registers internal-function mocks for test execution.
  *
  * @copyright Copyright (C) 2025 Terabytesoftw.
  * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 final class MockerExtension implements Extension
 {
+    /**
+     * Registers event subscribers that initialize and reset mock state.
+     */
     public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
         $facade->registerSubscribers(
@@ -57,6 +46,9 @@ final class MockerExtension implements Extension
         );
     }
 
+    /**
+     * Loads configured function mocks and snapshots their initial state.
+     */
     public static function load(): void
     {
         $mocks = [
