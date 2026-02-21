@@ -9,19 +9,11 @@ use yii\base\InvalidConfigException;
 use yii2\extensions\debug\WorkerTimelinePanel;
 
 /**
- * Test suite for {@see WorkerTimelinePanel} class functionality and behavior.
- *
- * Verifies the timeline panel ability to capture and report request start and end times, as well as peak memory usage,
- * under different application start time scenarios.
- *
- * These tests ensure the panel correctly calculates timeline boundaries using custom and default start times, returns
- * the expected data structure, and accurately reports peak memory usage.
+ * Unit tests for the {@see WorkerTimelinePanel} class.
  *
  * Test coverage.
- * - Custom start time handling for timeline calculation.
- * - Default start time fallback and data structure validation.
- * - Memory usage reporting using {@see \memory_get_peak_usage()}.
- * - Timeline order and value assertions.
+ * - Returns timeline data with custom request start time.
+ * - Returns timeline data with default request start time.
  *
  * @copyright Copyright (C) 2025 Terabytesoftw.
  * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.

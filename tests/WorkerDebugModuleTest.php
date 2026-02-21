@@ -28,21 +28,15 @@ use yii2\extensions\debug\{WorkerDebugModule, WorkerProfilingPanel, WorkerTimeli
 use function dirname;
 
 /**
- * Test suite for {@see WorkerDebugModule} class functionality and behavior.
- *
- * Verifies the debug module ability to configure core panels, set debug headers, and handle various edge cases related
- * to header calculation, log target types, and access control.
- *
- * These tests ensure correct integration of custom and standard debug panels, accurate duration calculation for debug
- * headers, and robust handling of different log target and response scenarios.
+ * Unit tests for the {@see WorkerDebugModule} class.
  *
  * Test coverage.
- * - Access control for debug header setting.
- * - Core panel configuration and default values.
- * - Debug header calculation and duration rounding.
- * - Handling of stateless and Yii start times.
- * - Log target type validation (object, array, string).
- * - Response sender type validation.
+ * - Calculates debug duration headers in milliseconds.
+ * - Keeps response headers unchanged when access is denied.
+ * - Keeps response headers unchanged when log target is an array or string.
+ * - Registers default module values and core panel classes.
+ * - Skips header injection when sender is not a response.
+ * - Uses `REQUEST_TIME_FLOAT` when available and `YII_BEGIN_TIME` when it is missing.
  *
  * @copyright Copyright (C) 2025 Terabytesoftw.
  * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
@@ -131,7 +125,7 @@ final class WorkerDebugModuleTest extends TestCase
 
         $headers = $this->createPartialMock(HeaderCollection::class, ['get', 'set']);
 
-        $headers->method('get')->with('statelessAppStartTime')->willReturn($startTime);
+        $headers->method('get')->with('REQUEST_TIME_FLOAT')->willReturn($startTime);
 
         $response = $this->createPartialMock(Response::class, ['getHeaders']);
 
@@ -316,7 +310,7 @@ final class WorkerDebugModuleTest extends TestCase
     /**
      * @throws InvalidConfigException if the configuration is invalid or incomplete.
      */
-    public function testSetDebugHeadersUsesStatelessAppStartTimeWhenAvailable(): void
+    public function testSetDebugHeadersUsesRequestTimeFloatWhenAvailable(): void
     {
         $customStartTime = (string) (microtime(true) - 1);
 
@@ -362,7 +356,7 @@ final class WorkerDebugModuleTest extends TestCase
                         self::assertGreaterThan(
                             0,
                             (float) $value,
-                            "'X-Debug-Duration' header should be greater than '0' when 'statelessAppStartTime' is "
+                            "'X-Debug-Duration' header should be greater than '0' when 'REQUEST_TIME_FLOAT' is "
                             . "available, got: {$value}.",
                         );
                         self::assertLessThan(
@@ -387,14 +381,14 @@ final class WorkerDebugModuleTest extends TestCase
 
         self::assertTrue(
             $durationCaptured,
-            "'X-Debug-Duration' header should be set when 'statelessAppStartTime' is available.",
+            "'X-Debug-Duration' header should be set when 'REQUEST_TIME_FLOAT' is available.",
         );
     }
 
     /**
      * @throws InvalidConfigException if the configuration is invalid or incomplete.
      */
-    public function testSetDebugHeadersUsesYiiBeginTimeWhenStatelessAppStartTimeHeaderIsMissing(): void
+    public function testSetDebugHeadersUsesYiiBeginTimeWhenRequestTimeFloatHeaderIsMissing(): void
     {
         $headers = $this->createMock(HeaderCollection::class);
 
@@ -454,6 +448,17 @@ final class WorkerDebugModuleTest extends TestCase
                                 'X-Debug-Duration',
                                 $name,
                                 "Header name for debug duration should be 'X-Debug-Duration', got '{$name}'.",
+                            );
+                            self::assertGreaterThan(
+                                0,
+                                (float) $value,
+                                "'X-Debug-Duration' should be positive when falling back to 'YII_BEGIN_TIME', "
+                                . "got: {$value}.",
+                            );
+                            self::assertLessThan(
+                                60000,
+                                (float) $value,
+                                "'X-Debug-Duration' should be a reasonable duration in milliseconds, got: {$value}.",
                             );
 
                             break;
