@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace yii2\extensions\debug\tests;
 
-use PHPUnit\Framework\MockObject\Exception;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
-use yii\web\{Application, HeaderCollection, IdentityInterface, Request};
+use yii\web\{Application, IdentityInterface, Request};
 
 use function dirname;
 
@@ -29,40 +28,61 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     protected const COOKIE_VALIDATION_KEY = 'wefJDF8sfdsfSDefwqdxj9oq'; // gitleaks:allow (test-only, not a real secret)
 
     /**
+     * Tracks whether the original REQUEST_TIME_FLOAT value existed before test override.
+     */
+    private bool $hasOriginalRequestTimeFloat = false;
+
+    /**
+     * Stores the original REQUEST_TIME_FLOAT value for restoration in tearDown.
+     */
+    private mixed $originalRequestTimeFloat = null;
+
+    /**
      * Tears down the test environment after each test execution.
      *
      * Closes the application and flushes the logger to ensure a clean state for subsequent tests.
      */
     public function tearDown(): void
     {
+        if ($this->hasOriginalRequestTimeFloat) {
+            $_SERVER['REQUEST_TIME_FLOAT'] = $this->originalRequestTimeFloat;
+        } else {
+            unset($_SERVER['REQUEST_TIME_FLOAT']);
+        }
+
         $this->closeApplication();
 
         parent::tearDown();
     }
 
     /**
-     * Creates a partial {@see Request} instance with the 'REQUEST_TIME_FLOAT' header mocked.
+     * Creates a {@see Request} instance with the $_SERVER['REQUEST_TIME_FLOAT'] server param set or unset.
      *
-     * Builds a web request object with the 'REQUEST_TIME_FLOAT' header set to the provided value, enabling tests for
+     * Builds a web request object with the REQUEST_TIME_FLOAT server param set to the provided value, or unset when
      * stateless application scenarios and start time measurement.
      *
-     * @param string|null $value Value to return for the 'REQUEST_TIME_FLOAT' header.
+     * @param float|null $value Value to return for the REQUEST_TIME_FLOAT server param.
      *
-     * @throws Exception If the mock object creation fails.
-     *
-     * @return Request Partial request instance with the mocked header.
+     * @return Request Request instance with prepared server params.
      */
-    protected function buildRequestWithStatelessStart(string|null $value): Request
+    protected function buildRequestWithStatelessStart(float|null $value): Request
     {
-        $headers = $this->createPartialMock(HeaderCollection::class, ['get']);
+        $this->hasOriginalRequestTimeFloat = array_key_exists('REQUEST_TIME_FLOAT', $_SERVER);
+        $this->originalRequestTimeFloat = $_SERVER['REQUEST_TIME_FLOAT'] ?? null;
 
-        $headers->method('get')->with('REQUEST_TIME_FLOAT')->willReturn($value);
+        if ($value === null) {
+            unset($_SERVER['REQUEST_TIME_FLOAT']);
+        } else {
+            $_SERVER['REQUEST_TIME_FLOAT'] = $value;
+        }
 
-        $request = $this->createPartialMock(Request::class, ['getHeaders']);
-
-        $request->method('getHeaders')->willReturn($headers);
-
-        return $request;
+        return new Request(
+            [
+                'cookieValidationKey' => self::COOKIE_VALIDATION_KEY,
+                'scriptFile' => __DIR__ . '/index.php',
+                'scriptUrl' => '/index.php',
+            ],
+        );
     }
 
     /**
