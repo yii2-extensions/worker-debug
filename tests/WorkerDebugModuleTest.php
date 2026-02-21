@@ -449,6 +449,17 @@ final class WorkerDebugModuleTest extends TestCase
                                 $name,
                                 "Header name for debug duration should be 'X-Debug-Duration', got '{$name}'.",
                             );
+                            self::assertGreaterThan(
+                                0,
+                            (float) $value,
+                                "'X-Debug-Duration' should be positive when falling back to 'YII_BEGIN_TIME', "
+                                . "got: {$value}.",
+                            );
+                            self::assertLessThan(
+                                60000,
+                                (float) $value,
+                                "'X-Debug-Duration' should be a reasonable duration in milliseconds, got: {$value}.",
+                            );
 
                             break;
                         case 3:
